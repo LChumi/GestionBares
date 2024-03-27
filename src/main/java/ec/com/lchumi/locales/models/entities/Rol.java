@@ -1,5 +1,6 @@
 package ec.com.lchumi.locales.models.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import ec.com.lchumi.locales.models.enums.RolEnum;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -26,6 +27,7 @@ public class Rol {
     @Column(name = "rol_nombre")
     private String descripcion;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "rol",cascade = CascadeType.ALL)
     private List<Usuario> usuarios;
 

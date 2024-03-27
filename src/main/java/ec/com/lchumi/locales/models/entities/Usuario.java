@@ -32,6 +32,10 @@ public class Usuario {
     private String telefono;
 
     @NotBlank
+    @Column(name = "usr_username")
+    private String nombreUsuario;
+
+    @NotBlank
     @Column(name = "usr_password")
     private String contraseña;
 
