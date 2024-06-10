@@ -1,5 +1,6 @@
 package ec.com.lchumi.locales.models.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Data;
@@ -27,6 +28,7 @@ public class Bodega {
     private Almacen almacen;
 
     @OneToMany(mappedBy = "bodega", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<AlmacenProducto> productos = new ArrayList<>();
 
 }

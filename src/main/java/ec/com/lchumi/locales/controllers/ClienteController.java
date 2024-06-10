@@ -27,7 +27,7 @@ public class ClienteController {
             List<Cliente> clientes =clienteService.findByAll();
             return ResponseEntity.ok(clientes);
         }catch (Exception e){
-            log.error("Error en el servicio {} ",e.getMessage());
+            log.error("Error en el servicio listar {} ",e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
@@ -69,9 +69,11 @@ public class ClienteController {
             encontrado.setDireccion(cliente.getDireccion());
             encontrado.setEmail(cliente.getEmail());
             encontrado.setDireccion(cliente.getDireccion());
-            return ResponseEntity.ok(encontrado);
+            Cliente actualizado = clienteService.save(encontrado);
+
+            return ResponseEntity.ok(actualizado);
         }catch (Exception e){
-            log.error("Error en el servicio porId {}",e.getMessage());
+            log.error("Error en el servicio actualizar {}",e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
