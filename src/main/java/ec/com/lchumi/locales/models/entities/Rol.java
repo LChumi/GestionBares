@@ -30,7 +30,4 @@ public class Rol {
     @JsonIgnore
     @OneToMany(mappedBy = "rol",cascade = CascadeType.ALL)
     private List<Usuario> usuarios;
-
-
-
 }

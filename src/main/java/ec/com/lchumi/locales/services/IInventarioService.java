@@ -12,5 +12,6 @@ public interface IInventarioService {
     void reducirStock(Long productoId, Long bodegaId, int cantidad) throws Exception;
 
     @Transactional
-    void registrarEntradaInventario(EntradaInventario entradaInventario);
+    void registrarEntradaInventaro(EntradaInventario entradaInventario);
+
 }

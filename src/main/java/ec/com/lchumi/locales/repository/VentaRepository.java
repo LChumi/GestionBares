@@ -15,7 +15,7 @@ public interface VentaRepository extends JpaRepository<Venta,Long> {
     List<Venta> findByFechaBetween(LocalDate startDate, LocalDate endDate);
     List<Venta> findByFecha(LocalDate fecha);
 
-    @Query("SELECT new ec.com.lchumi.locales.models.dto.ProductoMasVendidoDTO(d.producto.id, d.producto.desripcion, SUM(d.cantidad)) " +
+    @Query("SELECT new ec.com.lchumi.locales.models.dto.ProductoMasVendidoDTO(d.producto.id, d.producto.descripcion, SUM(d.cantidad)) " +
             "FROM DetalleVenta d GROUP BY d.producto.id ORDER BY SUM(d.cantidad) DESC")
     List<ProductoMasVendidoDTO> findProductoMasVendido();
 

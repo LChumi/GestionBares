@@ -27,7 +27,7 @@ public class Producto {
 
     @NotBlank
     @Column(name = "pro_descripcion")
-    private String desripcion;
+    private String descripcion;
 
     @Column(name = "pro_precio1")
     private BigDecimal precio1;

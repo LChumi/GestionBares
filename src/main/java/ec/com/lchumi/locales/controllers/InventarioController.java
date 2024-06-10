@@ -18,30 +18,23 @@ public class InventarioController {
     @Autowired
     private IInventarioService inventarioService;
 
-    @PostMapping("/entrada")
-    public ResponseEntity<String> registrarEntradaInventario(@RequestBody EntradaInventario entradaInventario) {
+    @PostMapping("/agregar-producto")
+    public ResponseEntity<String> agregarProducto(@RequestBody EntradaInventario entradaInventario) {
         try {
-            inventarioService.registrarEntradaInventario(entradaInventario);
-            return ResponseEntity.ok("Entrada de inventarii registrada exitosamente");
-        }catch (Exception e){
-            log.error(e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            inventarioService.registrarEntradaInventaro(entradaInventario);
+            return ResponseEntity.ok("Producto agregado y stock actualizado correctamente.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al agregar producto: " + e.getMessage());
         }
     }
 
-    @PostMapping("/agregar")
-    public ResponseEntity<String> agregarStock(@RequestBody MovimientoInventario request) {
-        inventarioService.agregarStock(request.getProducto().getId(), request.getBodega().getId(), request.getCantidad());
-        return ResponseEntity.ok("Stock agregado exitosamente");
-    }
-
-    @PostMapping("/reducir")
-    public ResponseEntity<String> reducirStock(@RequestBody MovimientoInventario request) {
+    @PostMapping("/incrementar-stock")
+    public ResponseEntity<String> incrementarStock(@RequestParam Long productoId, @RequestParam Long bodegaId, @RequestParam int cantidad) {
         try {
-            inventarioService.reducirStock(request.getProducto().getId(), request.getBodega().getId(), request.getCantidad());
-            return ResponseEntity.ok("Stock reducido exitosamente");
+            inventarioService.agregarStock(productoId, bodegaId, cantidad);
+            return ResponseEntity.ok("Stock incrementado correctamente.");
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al incrementar stock: " + e.getMessage());
         }
     }
 }

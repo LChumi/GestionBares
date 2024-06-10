@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @RequiredArgsConstructor
 public class InventarioServiceImpl implements IInventarioService{
 
-    private final AlmacenRepository almacenRepository;
+    private final AlmacenProductoRepository almacenProductoRepository;
     private final MovimientoInventarioRepository movimientoInventarioRepository;
     private final ProductoRepository productoRepository;
     private final BodegaRepository bodegaRepository;
@@ -20,62 +20,61 @@ public class InventarioServiceImpl implements IInventarioService{
 
     @Override
     public void agregarStock(Long productoId, Long bodegaId, int cantidad) {
-        Producto producto = productoRepository.findById(productoId).orElseThrow(()-> new RuntimeException("No existe el producto"));
-        Bodega bodega = bodegaRepository.findById(bodegaId).orElseThrow(() -> new RuntimeException("No existe el bodega"));
+        Producto producto = productoRepository.findById(productoId)
+                .orElseThrow(() -> new RuntimeException("No existe el producto"));
+        Bodega bodega = bodegaRepository.findById(bodegaId)
+                .orElseThrow(() -> new RuntimeException("No existe la bodega"));
 
-        Almacen almacen = almacenRepository.findByProductoAndBodega(producto,bodega);
-        if (almacen == null) {
-            almacen = new Almacen();
-            almacen.setStock(cantidad);
-            almacen.setProducto(producto);
-            almacen.setBodega(bodega);
-        }else {
-            almacen.setStock(almacen.getStock()+cantidad);
-        }
+        AlmacenProducto almacenProducto = almacenProductoRepository
+                .findByProductoAndBodega(producto, bodega)
+                .orElse(new AlmacenProducto(producto, bodega, 0));
 
-        MovimientoInventario movimiento = new MovimientoInventario();
-        movimiento.setProducto(producto);
-        movimiento.setBodega(bodega);
-        movimiento.setCantidad(cantidad);
-        movimiento.setTipo(TipoMovimientoEnum.ENTRADA);
-        movimiento.setFecha(LocalDate.now());
-        movimientoInventarioRepository.save(movimiento);
+        almacenProducto.setStock(almacenProducto.getStock() + cantidad);
+        almacenProductoRepository.save(almacenProducto);
+
+        registrarMovimientoInventario(producto, bodega, cantidad, TipoMovimientoEnum.ENTRADA);
     }
 
     @Override
     public void reducirStock(Long productoId, Long bodegaId, int cantidad) throws Exception {
-        Producto producto = productoRepository.findById(productoId).orElseThrow(()-> new RuntimeException("No existe el producto"));
-        Bodega bodega = bodegaRepository.findById(bodegaId).orElseThrow(() -> new RuntimeException("No existe el bodega"));
+        Producto producto = productoRepository.findById(productoId)
+                .orElseThrow(() -> new RuntimeException("No existe el producto"));
+        Bodega bodega = bodegaRepository.findById(bodegaId)
+                .orElseThrow(() -> new RuntimeException("No existe la bodega"));
 
-        Almacen almacen = almacenRepository.findByProductoAndBodega(producto,bodega);
-        if (almacen == null || almacen.getStock() < cantidad){
+        AlmacenProducto almacenProducto = almacenProductoRepository
+                .findByProductoAndBodega(producto, bodega)
+                .orElseThrow(() -> new Exception("Stock insuficiente"));
+
+        if (almacenProducto.getStock() < cantidad) {
             throw new Exception("Stock insuficiente");
         }
-        almacen.setStock(almacen.getStock() - cantidad );
-        almacenRepository.save(almacen);
+        almacenProducto.setStock(almacenProducto.getStock() - cantidad);
+        almacenProductoRepository.save(almacenProducto);
 
+        registrarMovimientoInventario(producto, bodega, cantidad, TipoMovimientoEnum.SALIDA);
+    }
+
+    private void registrarMovimientoInventario(Producto producto, Bodega bodega, int cantidad, TipoMovimientoEnum tipo) {
         MovimientoInventario movimiento = new MovimientoInventario();
         movimiento.setProducto(producto);
         movimiento.setBodega(bodega);
         movimiento.setCantidad(cantidad);
-        movimiento.setTipo(TipoMovimientoEnum.SALIDA);
+        movimiento.setTipo(tipo);
         movimiento.setFecha(LocalDate.now());
         movimientoInventarioRepository.save(movimiento);
     }
 
     @Override
-    public void registrarEntradaInventario(EntradaInventario entradaInventario) {
-        // Actualizar stock
-        Almacen almacen = almacenRepository.findByProductoAndBodega(entradaInventario.getProducto(),entradaInventario.getBodega());
-        if (almacen == null) {
-            almacen = new Almacen();
-            almacen.setStock(entradaInventario.getCantidad());
-            almacen.setProducto(entradaInventario.getProducto());
-            almacen.setBodega(entradaInventario.getBodega());
-        } else {
-            almacen.setStock(almacen.getStock() + entradaInventario.getCantidad());
-        }
-        almacenRepository.save(almacen);
+    public void registrarEntradaInventaro(EntradaInventario entradaInventario) {
+        // Actualizar stock en AlmacenProducto
+        AlmacenProducto almacenProducto = almacenProductoRepository.findByProductoAndBodega(entradaInventario.getProducto(), entradaInventario.getBodega())
+                .orElse(new AlmacenProducto());
+
+        almacenProducto.setProducto(entradaInventario.getProducto());
+        almacenProducto.setBodega(entradaInventario.getBodega());
+        almacenProducto.setStock(almacenProducto.getStock() + entradaInventario.getCantidad());
+        almacenProductoRepository.save(almacenProducto);
 
         // Registrar movimiento de inventario
         MovimientoInventario movimiento = new MovimientoInventario();

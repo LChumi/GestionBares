@@ -36,6 +36,7 @@ public class Cliente {
     @Column(name = "cli_direccion")
     private String direccion;
 
+    @Column(name = "cli_credito")
     private BigDecimal credito;
 
 }
