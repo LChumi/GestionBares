@@ -7,7 +7,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ProductoServiceImpl extends GenericServiceImpl<Producto,Long> implements ProductoService{
+public class ProductoServiceImpl extends GenericServiceImpl<Producto,Long> implements IProductoService {
     @Autowired
     private ProductoRepository productoRepository;
     @Override

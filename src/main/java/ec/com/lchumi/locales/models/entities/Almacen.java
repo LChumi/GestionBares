@@ -19,15 +19,14 @@ public class Almacen {
     @Column(name = "alm_id")
     private Long id;
 
-    @Column(name = "alm_nombre")
-    private String nombre;
+   @ManyToOne
+   @JoinColumn(name = "alm_producto", referencedColumnName = "pro_id")
+    private Producto producto;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "almacen", cascade = CascadeType.ALL)
-    private List<Bodega> bodegas;
+   @ManyToOne
+   @JoinColumn(name = "alm_bodega", referencedColumnName = "bod_id")
+    private Bodega bodega;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "almacen",cascade = CascadeType.ALL)
-    private List<Venta> ventas;
+   private int stock;
 
 }

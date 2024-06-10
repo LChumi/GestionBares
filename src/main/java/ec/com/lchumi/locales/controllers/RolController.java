@@ -1,7 +1,7 @@
 package ec.com.lchumi.locales.controllers;
 
 import ec.com.lchumi.locales.models.entities.Rol;
-import ec.com.lchumi.locales.services.RolService;
+import ec.com.lchumi.locales.services.IRolService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ import java.util.List;
 public class RolController {
 
     @Autowired
-    private RolService rolService;
+    private IRolService rolService;
 
     @GetMapping("listar")
     public ResponseEntity<List<Rol>> listar(){

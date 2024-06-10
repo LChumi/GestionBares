@@ -10,7 +10,7 @@ package ec.com.lchumi.locales.services;
 
 import java.io.File;
 
-public interface EmailService {
+public interface IEmailService {
 
     void sendMail(String[] toUser,String asunto, String message);
 

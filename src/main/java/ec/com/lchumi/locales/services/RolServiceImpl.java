@@ -7,7 +7,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 
 @Service
-public class RolServiceImpl extends GenericServiceImpl<Rol,Long> implements RolService {
+public class RolServiceImpl extends GenericServiceImpl<Rol,Long> implements IRolService {
     @Autowired
     private RolRepository rolRepository;
 

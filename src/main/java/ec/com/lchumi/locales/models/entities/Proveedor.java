@@ -32,11 +32,7 @@ public class Proveedor {
     @Column(name = "prov_email")
     private String email;
 
-    @Column(name = "direccion")
+    @Column(name = "prov_direccion")
     private String direccion;
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "proveedor", cascade = CascadeType.ALL)
-    private List<ProductoProveedor> productos;
 
 }

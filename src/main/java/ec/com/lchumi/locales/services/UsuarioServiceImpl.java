@@ -6,12 +6,11 @@ import ec.com.lchumi.locales.repository.UsuarioRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
-public class UsuarioServiceImpl extends GenericServiceImpl<Usuario,Long> implements UsuarioService {
+public class UsuarioServiceImpl extends GenericServiceImpl<Usuario,Long> implements IUsuarioService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;

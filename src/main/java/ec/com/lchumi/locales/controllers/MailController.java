@@ -9,7 +9,7 @@
 package ec.com.lchumi.locales.controllers;
 
 import ec.com.lchumi.locales.models.domain.EmailDto;
-import ec.com.lchumi.locales.services.EmailService;
+import ec.com.lchumi.locales.services.IEmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,7 +25,7 @@ import java.util.Map;
 public class MailController {
 
     @Autowired
-    private EmailService emailService;
+    private IEmailService emailService;
 
     @PostMapping("enviar")
     public ResponseEntity<?> reciveRequestEmail(@RequestBody EmailDto emailDto){

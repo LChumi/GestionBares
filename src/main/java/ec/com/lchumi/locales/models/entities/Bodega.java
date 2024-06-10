@@ -22,13 +22,6 @@ public class Bodega {
     @Column(name = "bod_nombre")
     private String nombre;
 
-    @ManyToOne
-    @JoinColumn(name = "bod_almacen", referencedColumnName = "alm_id")
-    private Almacen almacen;
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "bodega", cascade = CascadeType.ALL)
-    private List<BodegaProducto> productos;
 
 
 }

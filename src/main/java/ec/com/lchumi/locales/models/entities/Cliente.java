@@ -1,12 +1,12 @@
 package ec.com.lchumi.locales.models.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Entity
@@ -36,11 +36,6 @@ public class Cliente {
     @Column(name = "cli_direccion")
     private String direccion;
 
-    @OneToOne(mappedBy = "cliente")
-    private Credito credito;
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "cliente")
-    private List<Venta> ventas;
+    private BigDecimal credito;
 
 }

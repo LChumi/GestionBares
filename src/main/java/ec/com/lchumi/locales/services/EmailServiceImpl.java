@@ -21,7 +21,7 @@ import java.io.File;
 import java.nio.charset.StandardCharsets;
 
 @Service
-public class EmailServiceImpl implements EmailService{
+public class EmailServiceImpl implements IEmailService {
 
     @Autowired
     private JavaMailSender mailSender;

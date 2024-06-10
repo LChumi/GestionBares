@@ -8,6 +8,7 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Entity
@@ -29,24 +30,9 @@ public class Producto {
     private String desripcion;
 
     @Column(name = "pro_precio1")
-    private double precio1;
+    private BigDecimal precio1;
 
     @Column(name = "pro_precio")
-    private double precio;
+    private BigDecimal precio;
 
-    @NotNull
-    @Column(name = "pro_stock")
-    private int stock;
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL)
-    private List<BodegaProducto> bodegas;
-
-    @ManyToOne
-    @JoinColumn(name = "prod_categoria",referencedColumnName = "cat_id")
-    private Categoria categoria;
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "producto",cascade = CascadeType.ALL)
-    private List<ProductoProveedor> proveedores;
 }

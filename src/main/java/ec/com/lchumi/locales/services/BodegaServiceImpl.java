@@ -7,7 +7,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 
 @Service
-public class BodegaServiceImpl extends GenericServiceImpl<Bodega,Long> implements BodegaService {
+public class BodegaServiceImpl extends GenericServiceImpl<Bodega,Long> implements IBodegaService {
 
     @Autowired
     private BodegaRepository bodegaRepository;

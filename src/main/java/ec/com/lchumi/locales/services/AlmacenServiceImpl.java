@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class AlmacenServiceImpl extends GenericServiceImpl<Almacen,Long> implements AlmacenService {
+public class AlmacenServiceImpl extends GenericServiceImpl<Almacen,Long> implements IAlmacenService {
 
     @Autowired
     private AlmacenRepository almacenRepository;

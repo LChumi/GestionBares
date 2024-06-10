@@ -2,7 +2,7 @@ package ec.com.lchumi.locales.controllers;
 
 import ec.com.lchumi.locales.models.auth.UserRequest;
 import ec.com.lchumi.locales.models.entities.Usuario;
-import ec.com.lchumi.locales.services.UsuarioService;
+import ec.com.lchumi.locales.services.IUsuarioService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ import java.util.List;
 public class UsuarioController {
 
     @Autowired
-    private UsuarioService usuarioService;
+    private IUsuarioService usuarioService;
 
     @GetMapping("listar")
     public ResponseEntity<List<Usuario>> listar(){

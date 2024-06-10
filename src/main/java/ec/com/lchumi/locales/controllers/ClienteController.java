@@ -1,7 +1,7 @@
 package ec.com.lchumi.locales.controllers;
 
 import ec.com.lchumi.locales.models.entities.Cliente;
-import ec.com.lchumi.locales.services.ClienteService;
+import ec.com.lchumi.locales.services.IClienteService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ import java.util.List;
 public class ClienteController {
 
     @Autowired
-    private ClienteService clienteService;
+    private IClienteService clienteService;
 
     @GetMapping("listar")
     public ResponseEntity<List<Cliente>> lista(){
