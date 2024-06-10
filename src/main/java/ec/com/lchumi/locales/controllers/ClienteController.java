@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -86,6 +87,17 @@ public class ClienteController {
             return ResponseEntity.ok().build();
         }catch (Exception e){
             log.error("Error en el servicio eliminar: {}",e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @PostMapping("{clienteId}/credito")
+    public ResponseEntity<String> actualizarCredito(@PathVariable Long clienteId, @RequestBody BigDecimal monto){
+        try {
+            clienteService.actualizarCredito(clienteId, monto);
+            return ResponseEntity.status(HttpStatus.OK).body("Credito actualizado exitosamente");
+        }catch (Exception e){
+            log.error("Error en el servicio actualizarCredito {}",e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
