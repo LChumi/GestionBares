@@ -82,7 +82,7 @@ public class RolController {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
             }
             rolService.delete(id);
-            return ResponseEntity.ok().build();
+            return ResponseEntity.noContent().build();
         }catch (Exception e){
             log.error("Error en el servicio al eliminar {} ",e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

@@ -5,6 +5,7 @@ import ec.com.lchumi.locales.models.enums.TipoMovimientoEnum;
 import ec.com.lchumi.locales.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -13,7 +14,7 @@ import java.time.LocalDate;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class VentaServiceImpl implements IVentaService {
+public class VentaServiceImpl extends GenericServiceImpl<Venta,Long> implements IVentaService {
 
     private final VentaRepository ventaRepository;
     private final AlmacenProductoRepository almacenProductoRepository;
@@ -22,49 +23,57 @@ public class VentaServiceImpl implements IVentaService {
     private final ClienteRepository clienteRepository;
 
     @Override
-    public Venta registrarVenta(Venta venta) throws Exception {
-        // Validar stock disponible y reducirlo
-        for (DetalleVenta detalle : venta.getDetalles()) {
-            AlmacenProducto almacenProducto = almacenProductoRepository.findByProductoAndBodega(detalle.getProducto(), detalle.getBodega())
-                    .orElseThrow(() -> new Exception("No existe el producto en la bodega especificada"));
+    public DetalleVenta agregarDetalle(Long ventaId, DetalleVenta detalle) throws Exception {
+        Venta venta = ventaRepository.findById(ventaId).orElseThrow(() -> new Exception("Venta no encontrada"));
 
-            if (almacenProducto.getStock() < detalle.getCantidad()) {
-                log.error("Stock insuficiente para el producto " + detalle.getProducto().getDescripcion());
-                throw new Exception("Stock insuficiente para el producto " + detalle.getProducto().getDescripcion());
-            }
+        //Validar stock
+        AlmacenProducto almacenProducto = almacenProductoRepository.findByProductoAndBodega(detalle.getProducto(), detalle.getBodega()).orElseThrow(() -> new Exception("No existe el producto en la bodega"));
 
-            // Reducir stock
-            almacenProducto.setStock(almacenProducto.getStock() - detalle.getCantidad());
-            almacenProductoRepository.save(almacenProducto);
+        int cantidadAgregar= detalle.getCantidad() > 0 ? detalle.getCantidad() : 1;
 
-            // Registrar movimiento de inventario
-            MovimientoInventario movimiento = new MovimientoInventario();
-            movimiento.setProducto(detalle.getProducto());
-            movimiento.setCantidad(detalle.getCantidad());
-            movimiento.setBodega(detalle.getBodega());
-            movimiento.setTipo(TipoMovimientoEnum.SALIDA);
-            movimiento.setFecha(LocalDate.now());
-            movimientoInventarioRepository.save(movimiento);
+        if (almacenProducto.getStock() < cantidadAgregar) {
+            log.error("Stock insuficiente para el producto {} " , detalle.getProducto().getDescripcion());
+            throw new Exception("Stock insuficiente para el producto " + detalle.getProducto().getDescripcion());
         }
 
-        // Validar crédito del cliente
-        Cliente cliente = venta.getCliente();
-        BigDecimal creditoDisponible = cliente.getCredito();
-        if (creditoDisponible.compareTo(venta.getTotal()) < 0) {
-            throw new Exception("Crédito insuficiente para completar la compra");
-        }
+        //reducir stock
+        almacenProducto.setStock(almacenProducto.getStock() - cantidadAgregar);
+        almacenProductoRepository.save(almacenProducto);
 
-        // Guardar venta y detalles
-        venta = ventaRepository.save(venta);
-        for (DetalleVenta detalle : venta.getDetalles()) {
-            detalle.setVenta(venta);
-            detalleVentaRepository.save(detalle);
-        }
+        // Registrar movimiento de inventario
+        MovimientoInventario movimiento = new MovimientoInventario();
+        movimiento.setProducto(detalle.getProducto());
+        movimiento.setCantidad(cantidadAgregar);
+        movimiento.setBodega(detalle.getBodega());
+        movimiento.setTipo(TipoMovimientoEnum.SALIDA);
+        movimiento.setFecha(LocalDate.now());
+        movimientoInventarioRepository.save(movimiento);
 
-        // Actualizar crédito del cliente
-        cliente.setCredito(creditoDisponible.subtract(venta.getTotal()));
-        clienteRepository.save(cliente);
+        // Agregar detalle a la venta
+        venta.agregarDetalle(detalle);
+        ventaRepository.save(venta);
 
-        return venta;
+        return detalle;
+    }
+
+    @Override
+    public void eliminarDetalle(Long ventaId, Long detalleId) throws Exception {
+        Venta venta = ventaRepository.findById(ventaId).orElseThrow(() -> new Exception("Venta no encontrada"));
+        venta.eliminarDetalle(detalleId);
+        ventaRepository.save(venta);
+    }
+
+    @Override
+    public DetalleVenta actualizarDetalle(Long ventaId, Long detalleId, DetalleVenta detalleVenta) throws Exception {
+        Venta venta = ventaRepository.findById(ventaId).orElseThrow(()-> new Exception("Venta no encontrada"));
+        venta.actualizarDetalle(detalleId, detalleVenta);
+        ventaRepository.save(venta);
+        return detalleVenta;
+    }
+
+
+    @Override
+    public CrudRepository<Venta, Long> getDao() {
+        return ventaRepository;
     }
 }

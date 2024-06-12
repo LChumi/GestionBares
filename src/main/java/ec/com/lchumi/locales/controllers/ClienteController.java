@@ -86,7 +86,7 @@ public class ClienteController {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
             }
             clienteService.delete(id);
-            return ResponseEntity.ok().build();
+            return ResponseEntity.noContent().build();
         }catch (Exception e){
             log.error("Error en el servicio eliminar: {}",e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

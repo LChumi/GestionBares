@@ -34,7 +34,12 @@ public class DetalleVenta {
     private int cantidad;
     @Column(name = "dventas_precio_unitario")
     private BigDecimal precioUnitario;
+
+    @Setter(AccessLevel.NONE)
     @Column(name = "dventas_subtotal")
     private BigDecimal subtotal;
 
+    public BigDecimal getSubtotal() {
+        return this.precioUnitario.multiply(BigDecimal.valueOf(this.cantidad));
+    }
 }

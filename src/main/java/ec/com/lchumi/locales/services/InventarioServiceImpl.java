@@ -4,6 +4,8 @@ import ec.com.lchumi.locales.models.entities.*;
 import ec.com.lchumi.locales.models.enums.TipoMovimientoEnum;
 import ec.com.lchumi.locales.repository.*;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -12,6 +14,7 @@ import java.time.LocalDate;
 @RequiredArgsConstructor
 public class InventarioServiceImpl implements IInventarioService{
 
+    private static final Logger log = LoggerFactory.getLogger(InventarioServiceImpl.class);
     private final AlmacenProductoRepository almacenProductoRepository;
     private final MovimientoInventarioRepository movimientoInventarioRepository;
     private final ProductoRepository productoRepository;
@@ -27,7 +30,7 @@ public class InventarioServiceImpl implements IInventarioService{
 
         AlmacenProducto almacenProducto = almacenProductoRepository
                 .findByProductoAndBodega(producto, bodega)
-                .orElse(new AlmacenProducto(producto, bodega, 0));
+                .orElseThrow(()-> new RuntimeException("No se encontro el producto en la bodega "));
 
         almacenProducto.setStock(almacenProducto.getStock() + cantidad);
         almacenProductoRepository.save(almacenProducto);
@@ -67,6 +70,7 @@ public class InventarioServiceImpl implements IInventarioService{
 
     @Override
     public void registrarEntradaInventaro(EntradaInventario entradaInventario) {
+        log.info(entradaInventario.toString());
         // Actualizar stock en AlmacenProducto
         AlmacenProducto almacenProducto = almacenProductoRepository.findByProductoAndBodega(entradaInventario.getProducto(), entradaInventario.getBodega())
                 .orElse(new AlmacenProducto());
@@ -75,6 +79,7 @@ public class InventarioServiceImpl implements IInventarioService{
         almacenProducto.setBodega(entradaInventario.getBodega());
         almacenProducto.setStock(almacenProducto.getStock() + entradaInventario.getCantidad());
         almacenProductoRepository.save(almacenProducto);
+        log.info(almacenProducto.toString());
 
         // Registrar movimiento de inventario
         MovimientoInventario movimiento = new MovimientoInventario();
@@ -84,6 +89,7 @@ public class InventarioServiceImpl implements IInventarioService{
         movimiento.setTipo(TipoMovimientoEnum.ENTRADA);
         movimiento.setFecha(LocalDate.now());
         movimientoInventarioRepository.save(movimiento);
+        log.info(movimiento.toString());
 
         // Registrar entrada de inventario
         entradaInventarioRepositorio.save(entradaInventario);

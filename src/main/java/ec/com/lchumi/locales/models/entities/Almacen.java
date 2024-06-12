@@ -22,6 +22,7 @@ public class Almacen {
     @Column(name = "alm_nombre")
     private String nombre;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "almacen", cascade = CascadeType.ALL)
     private List<Bodega> bodegas;
 

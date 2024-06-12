@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/cliente/")
+@RequestMapping("/bodega/")
 @CrossOrigin("*")
 @Slf4j
 public class BodegaController {
@@ -55,7 +55,7 @@ public class BodegaController {
         }
     }
 
-    @PutMapping("Actualizar/{id}")
+    @PutMapping("actualizar/{id}")
     public ResponseEntity<Bodega> actualizar(@PathVariable Long id, @RequestBody Bodega bodega){
         try {
             Bodega encontrada = bodegaService.porId(id);
@@ -83,7 +83,7 @@ public class BodegaController {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
             }
             bodegaService.delete(id);
-            return ResponseEntity.ok().build();
+            return ResponseEntity.noContent().build();
         }catch (Exception e){
             log.error("Error en el servicio eliminar id: {}", id , e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);

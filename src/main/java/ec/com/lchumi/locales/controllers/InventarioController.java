@@ -18,7 +18,7 @@ public class InventarioController {
     @Autowired
     private IInventarioService inventarioService;
 
-    @PostMapping("/agregar-producto")
+    @PostMapping("agregar-producto")
     public ResponseEntity<String> agregarProducto(@RequestBody EntradaInventario entradaInventario) {
         try {
             inventarioService.registrarEntradaInventaro(entradaInventario);
@@ -28,13 +28,23 @@ public class InventarioController {
         }
     }
 
-    @PostMapping("/incrementar-stock")
-    public ResponseEntity<String> incrementarStock(@RequestParam Long productoId, @RequestParam Long bodegaId, @RequestParam int cantidad) {
+    @GetMapping("incrementar-stock/{productoId}/{bodegaId}/{cantidad}")
+    public ResponseEntity<String> incrementarStock(@PathVariable Long productoId, @PathVariable Long bodegaId, @PathVariable int cantidad) {
         try {
             inventarioService.agregarStock(productoId, bodegaId, cantidad);
             return ResponseEntity.ok("Stock incrementado correctamente.");
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al incrementar stock: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Error al incrementar stock: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("reducir-stock/{productoId}/{bodegaId}/{cantidad}")
+    public ResponseEntity<String> reducirStock(@PathVariable Long productoId, @PathVariable Long bodegaId, @PathVariable int cantidad) {
+        try {
+            inventarioService.reducirStock(productoId, bodegaId, cantidad);
+            return ResponseEntity.ok("Stock reducido correctamente.");
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Error al reducir stock: " + e.getMessage());
         }
     }
 }

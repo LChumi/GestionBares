@@ -1,9 +1,11 @@
 package ec.com.lchumi.locales.controllers;
 
+import ec.com.lchumi.locales.models.entities.DetalleVenta;
 import ec.com.lchumi.locales.models.entities.Venta;
 import ec.com.lchumi.locales.services.IVentaService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,12 +18,43 @@ public class VentaController {
     @Autowired
     private IVentaService ventaService;
 
-    @PostMapping("registrar-venta")
-    public ResponseEntity<Venta> registrarVenta(@RequestBody Venta venta) {
+    @PostMapping("{ventaId}/detalles-add")
+    public ResponseEntity<DetalleVenta> agregarDetalle(@PathVariable Long ventaId, @RequestBody DetalleVenta detalleVenta) {
         try {
-            Venta nuevaVenta = ventaService.registrarVenta(venta);
-            return ResponseEntity.ok(nuevaVenta);
+            DetalleVenta nuevoDetalle = ventaService.agregarDetalle(ventaId,detalleVenta);
+            return ResponseEntity.status(HttpStatus.CREATED).body(nuevoDetalle);
         } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+    }
+
+    @DeleteMapping("{ventaId}/detalles-del/{detalleId}")
+    public ResponseEntity<Void> eliminarDetalle(@PathVariable Long ventaId, @PathVariable Long detalleId) {
+        try {
+            ventaService.eliminarDetalle(ventaId,detalleId);
+            return ResponseEntity.noContent().build();
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+
+    @PutMapping("{ventaId}/detalles-put/{detalleId}")
+    public ResponseEntity<DetalleVenta> actualizarDetalle(@PathVariable Long ventaId, @PathVariable Long detalleId, @RequestBody DetalleVenta detalleActualizado) {
+        try {
+            DetalleVenta detalle = ventaService.actualizarDetalle(ventaId, detalleId, detalleActualizado);
+            return ResponseEntity.ok(detalle);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
+    @PostMapping("crear-venta")
+    public ResponseEntity<Venta> crearVenta(@RequestBody Venta venta) {
+        try {
+            Venta ventanueva = ventaService.save(venta);
+            return ResponseEntity.ok(ventanueva);
+        }catch (Exception e){
+            log.error("Error al crear venta", e);
             return ResponseEntity.badRequest().body(null);
         }
     }
