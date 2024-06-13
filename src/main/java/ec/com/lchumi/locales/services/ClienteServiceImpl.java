@@ -21,7 +21,7 @@ public class ClienteServiceImpl extends GenericServiceImpl<Cliente,Long> impleme
     @Override
     public void actualizarCredito(Long clienteId, BigDecimal monto) {
         Cliente cliente = clienteRepository.findById(clienteId).orElseThrow(() -> new RuntimeException("Cliente no encontrado"));
-        cliente.setCredito(cliente.getCredito().add(monto));
+        cliente.setCupo(cliente.getCupo().add(monto));
         clienteRepository.save(cliente);
     }
 }

@@ -1,5 +1,6 @@
 package ec.com.lchumi.locales.models.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Data;
@@ -32,6 +33,8 @@ public class DetalleVenta {
 
     @Column(name = "dventas_cantidad")
     private int cantidad;
+
+    @Setter(AccessLevel.NONE)
     @Column(name = "dventas_precio_unitario")
     private BigDecimal precioUnitario;
 
@@ -41,5 +44,23 @@ public class DetalleVenta {
 
     public BigDecimal getSubtotal() {
         return this.precioUnitario.multiply(BigDecimal.valueOf(this.cantidad));
+    }
+
+    public void setProducto(Producto producto) {
+        this.producto = producto;
+        setPrecioUnitario();
+    }
+
+    public void setPrecioUnitario() {
+        if (this.producto != null) {
+            this.precioUnitario = this.producto.getPrecio1();
+        }
+    }
+
+    public void actualizarSubtotal() {
+        if (this.producto != null) {
+            this.precioUnitario = this.producto.getPrecio1();
+        }
+        this.subtotal = this.precioUnitario.multiply(BigDecimal.valueOf(this.cantidad));
     }
 }

@@ -28,11 +28,15 @@ public class Venta {
     @ManyToOne
     private Cliente cliente;
 
+    @Setter(AccessLevel.NONE)
     @Column(name = "vent_total")
     private BigDecimal total;
 
+    @Column(name = "vent_forma_pago")
+    private String formaPago;
+
     @JsonIgnore
-    @OneToMany(mappedBy = "venta", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "venta", cascade = CascadeType.ALL , orphanRemoval = true)
     private List<DetalleVenta> detalles = new ArrayList<>();
 
     @ManyToOne
@@ -42,9 +46,9 @@ public class Venta {
     public void agregarDetalle(DetalleVenta detalle) {
         boolean found = false;
         for (DetalleVenta existente : this.detalles) {
-            if (existente.getProducto().equals(detalle.getProducto()) && existente.getBodega().equals(detalle.getBodega())){
-                int nuevaCantidad = existente.getCantidad()+(detalle.getCantidad() > 0 ? detalle.getCantidad() :1);
-                existente.setCantidad(nuevaCantidad);
+            if (existente.getProducto().getId().equals(detalle.getProducto().getId()) && existente.getBodega().getId().equals(detalle.getBodega().getId())) {
+                int nuevaCantidad = existente.getCantidad() + (detalle.getCantidad() > 0 ? detalle.getCantidad() : 1);
+                existente.actualizarSubtotal();  // Actualizar el subtotal del detalle existente
                 found = true;
                 break;
             }
@@ -53,27 +57,38 @@ public class Venta {
         if (!found) {
             detalle.setCantidad(detalle.getCantidad() > 0 ? detalle.getCantidad() : 1);
             detalle.setVenta(this);
+            detalle.actualizarSubtotal();  // Calcular el subtotal del nuevo detalle
             this.detalles.add(detalle);
         }
+        calcularTotal();
     }
 
     public void actualizarDetalle(Long detalleId, DetalleVenta detalleActualizado) throws Exception {
-        DetalleVenta detalleExistente = this.detalles.stream()
-                .filter(d -> d.getId().equals(detalleId))
-                .findFirst()
-                .orElseThrow(() -> new Exception("Detalle de venta no encontrado"));
-
+        DetalleVenta detalleExistente = this.getDetalleById(detalleId);
         detalleExistente.setProducto(detalleActualizado.getProducto());
         detalleExistente.setBodega(detalleActualizado.getBodega());
         detalleExistente.setCantidad(detalleActualizado.getCantidad());
-        detalleExistente.setPrecioUnitario(detalleActualizado.getPrecioUnitario());
+        calcularTotal();
     }
 
     public void eliminarDetalle(Long detalleId) throws Exception {
-        DetalleVenta detalle = this.detalles.stream()
+       DetalleVenta detalleVenta = this.getDetalleById(detalleId);
+       this.detalles.remove(detalleVenta);
+       calcularTotal();
+    }
+
+    public DetalleVenta getDetalleById(Long detalleId) throws Exception {
+        return this.detalles.stream()
                 .filter(d -> d.getId().equals(detalleId))
                 .findFirst()
                 .orElseThrow(() -> new Exception("Detalle de venta no encontrado"));
-        this.detalles.remove(detalle);
+    }
+
+    private void calcularTotal() {
+        BigDecimal total = BigDecimal.ZERO;
+        for (DetalleVenta detalle : this.detalles) {
+            total = total.add(detalle.getSubtotal());
+        }
+        this.total = total;
     }
 }

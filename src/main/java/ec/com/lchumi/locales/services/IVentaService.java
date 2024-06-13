@@ -1,8 +1,11 @@
 package ec.com.lchumi.locales.services;
 
+import ec.com.lchumi.locales.models.entities.Cliente;
 import ec.com.lchumi.locales.models.entities.DetalleVenta;
 import ec.com.lchumi.locales.models.entities.Venta;
 import jakarta.transaction.Transactional;
+
+import java.math.BigDecimal;
 
 public interface IVentaService extends IGenericService<Venta, Long>{
 
@@ -12,4 +15,7 @@ public interface IVentaService extends IGenericService<Venta, Long>{
     void eliminarDetalle(Long ventaId, Long detalleId) throws Exception;
     @Transactional
     DetalleVenta actualizarDetalle(Long ventaId, Long detalleId, DetalleVenta detalleVenta) throws Exception;
+
+    Venta procesarPago(Long ventaId, BigDecimal montoCredito, BigDecimal montoEfectivo, BigDecimal montoTarjeta) throws Exception;
+    Cliente pagarCredito(Long clienteId, BigDecimal monto) throws Exception;
 }
