@@ -32,7 +32,7 @@ public class UsuarioServiceImpl extends GenericServiceImpl<Usuario,Long> impleme
                 log.error("Usuario no Encontrado");
                 return null;
             }
-            return UserRequest.builder().username(usuario.getNombre()).password(usuario.getContraseña()).build();
+            return UserRequest.builder().username(usuario.getNombre()).password(usuario.getPassword()).build();
         }catch (Exception e){
             return null;
         }

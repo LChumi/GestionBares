@@ -38,7 +38,7 @@ public class Usuario {
 
     @NotBlank
     @Column(name = "usr_password")
-    private String contraseña;
+    private String password;
 
     @ManyToOne
     @JoinColumn(name = "usr_rol", referencedColumnName = "rol_id")

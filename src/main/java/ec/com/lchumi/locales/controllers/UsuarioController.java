@@ -1,6 +1,5 @@
 package ec.com.lchumi.locales.controllers;
 
-import ec.com.lchumi.locales.models.auth.UserRequest;
 import ec.com.lchumi.locales.models.entities.Almacen;
 import ec.com.lchumi.locales.models.entities.Bodega;
 import ec.com.lchumi.locales.models.entities.Usuario;
@@ -74,7 +73,7 @@ public class UsuarioController {
             }
             encontrado.setApellido(usuario.getApellido());
             encontrado.setNombre(usuario.getNombre());
-            encontrado.setContraseña(usuario.getContraseña());
+            encontrado.setPassword(usuario.getPassword());
             encontrado.setRol(usuario.getRol());
             encontrado.setTelefono(usuario.getTelefono());
             encontrado.setNombreUsuario(usuario.getNombreUsuario());
@@ -123,5 +122,24 @@ public class UsuarioController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+
+    @PostMapping("usuarios/{usuarioId}/almacenes/{almacenId}")
+    public void agregarAlmacen(@PathVariable Long usuarioId, @PathVariable Long almacenId) {
+        try {
+            usuarioService.agregarAlmacen(usuarioId, almacenId);
+        }catch (Exception e){
+            log.error(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("usuarios/{usuarioId}/almacenes/{almacenId}")
+    public void eliminarAlmacen(@PathVariable Long usuarioId, @PathVariable Long almacenId) {
+        try {
+            usuarioService.eliminarAlmacen(usuarioId, almacenId);
+        }catch (Exception e){
+            log.error(e.getMessage());
+        }
+    }
+
 
 }
