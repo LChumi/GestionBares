@@ -48,6 +48,7 @@ public class Usuario {
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
     private List<Venta> ventas;
 
+    @JsonIgnore
     @ManyToMany
     @JoinTable(name = "usuario_almacen",
             joinColumns = @JoinColumn(name = "ua_usuario", referencedColumnName = "usr_id"),
@@ -58,6 +59,14 @@ public class Usuario {
         return this.almacenes.stream()
                 .flatMap(a -> a.getBodegas().stream())
                 .collect(Collectors.toList());
+    }
+
+    public void addAlmacen(Almacen almacen){
+        this.almacenes.add(almacen);
+    }
+
+    public void removeAlmacen(Almacen almacen){
+        this.almacenes.remove(almacen);
     }
 
 }

@@ -1,6 +1,8 @@
 package ec.com.lchumi.locales.controllers;
 
 import ec.com.lchumi.locales.models.auth.UserRequest;
+import ec.com.lchumi.locales.models.entities.Almacen;
+import ec.com.lchumi.locales.models.entities.Bodega;
 import ec.com.lchumi.locales.models.entities.Usuario;
 import ec.com.lchumi.locales.services.IUsuarioService;
 import jakarta.validation.Valid;
@@ -94,16 +96,32 @@ public class UsuarioController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("login")
-    public ResponseEntity<UserRequest> login(@Valid @RequestBody UserRequest userRequest){
+    @GetMapping("listaBodegas/{usuarioId}")
+    public ResponseEntity<List<Bodega>> listarBodegas(@PathVariable Long usuarioId){
         try {
-            UserRequest usuario= usuarioService.login(userRequest);
-            if (usuario== null ){
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            Usuario encontrado = usuarioService.porId(usuarioId);
+            if (encontrado == null){
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
             }
-            return ResponseEntity.ok(usuario);
+            List<Bodega> bodegas = encontrado.getBodegas();
+            return ResponseEntity.ok(bodegas);
         }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+
+    @GetMapping("listarAlmacenes/{usuarioId}")
+    public ResponseEntity<List<Almacen>> listarAlmacenes(@PathVariable Long usuarioId){
+        try {
+            Usuario encontrado = usuarioService.porId(usuarioId);
+            if (encontrado == null){
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            }
+            List<Almacen> almacenes = encontrado.getAlmacenes();
+            return ResponseEntity.ok(almacenes);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
 }
