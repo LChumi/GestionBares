@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "usuario")
@@ -46,4 +47,17 @@ public class Usuario {
     @JsonIgnore
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
     private List<Venta> ventas;
+
+    @ManyToMany
+    @JoinTable(name = "usuario_almacen",
+            joinColumns = @JoinColumn(name = "ua_usuario", referencedColumnName = "usr_id"),
+            inverseJoinColumns = @JoinColumn(name = "ua_almacen", referencedColumnName = "alm_id"))
+    private List<Almacen> almacenes;
+
+    public List<Bodega> getBodegas(){
+        return this.almacenes.stream()
+                .flatMap(a -> a.getBodegas().stream())
+                .collect(Collectors.toList());
+    }
+
 }

@@ -47,4 +47,14 @@ public class InventarioController {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Error al reducir stock: " + e.getMessage());
         }
     }
+
+    @GetMapping("transferir/{productoId}/{bodegaOrigenId}/{bodegaDestinoId}/{cantidad}")
+    public ResponseEntity<String> transferirProducto(@PathVariable Long productoId, @PathVariable Long bodegaOrigenId,@PathVariable Long bodegaDestinoId, @PathVariable int cantidad) {
+        try {
+            inventarioService.transferirProducto(productoId, bodegaOrigenId, bodegaDestinoId, cantidad);
+            return ResponseEntity.ok("Transferencia satisfactoria.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Error al transferir Producto: " + e.getMessage());
+        }
+    }
 }

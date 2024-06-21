@@ -14,4 +14,7 @@ public interface IInventarioService {
     @Transactional
     void registrarEntradaInventaro(EntradaInventario entradaInventario);
 
+    @Transactional
+    void transferirProducto(Long productoId, Long bodegaOrigenId, Long bodegaDesitnoId, int cantidad) throws Exception;
+
 }

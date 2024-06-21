@@ -94,4 +94,30 @@ public class InventarioServiceImpl implements IInventarioService{
         // Registrar entrada de inventario
         entradaInventarioRepositorio.save(entradaInventario);
     }
+
+    @Override
+    public void transferirProducto(Long productoId, Long bodegaOrigenId, Long bodegaDesitnoId, int cantidad) throws Exception {
+        Producto producto = productoRepository.findById(productoId).orElseThrow(() -> new RuntimeException("No existe el producto"));
+        Bodega bodegaOrigen = bodegaRepository.findById(bodegaOrigenId).orElseThrow(() -> new RuntimeException("No existe la bodega de origen"));
+        Bodega bodegaDestino = bodegaRepository.findById(bodegaDesitnoId).orElseThrow(() -> new RuntimeException("No existe la bodega de destino "));
+
+        AlmacenProducto almacenProductoOrigen= almacenProductoRepository.findByProductoAndBodega(producto,bodegaOrigen).orElseThrow(() -> new RuntimeException(" Stock insuficiente en la bodega de origen "));
+
+        if (almacenProductoOrigen.getStock() < cantidad){
+            throw new Exception("Stock insuficiente en la bodega de origen");
+        }
+
+        almacenProductoOrigen.setStock(almacenProductoOrigen.getStock()-cantidad);
+        almacenProductoRepository.save(almacenProductoOrigen);
+
+        AlmacenProducto almacenProductoDesitno = almacenProductoRepository.findByProductoAndBodega(producto,bodegaDestino).orElse(new AlmacenProducto());
+        almacenProductoDesitno.setProducto(producto);
+        almacenProductoDesitno.setBodega(bodegaDestino);
+        almacenProductoDesitno.setStock(almacenProductoDesitno.getStock() + cantidad);
+        almacenProductoRepository.save(almacenProductoDesitno);
+
+        registrarMovimientoInventario(producto,bodegaOrigen,cantidad,TipoMovimientoEnum.SALIDA);
+        registrarMovimientoInventario(producto,bodegaDestino,cantidad,TipoMovimientoEnum.ENTRADA);
+
+    }
 }
