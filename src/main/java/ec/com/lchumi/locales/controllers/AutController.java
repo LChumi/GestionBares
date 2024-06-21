@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/almacen/")
+@RequestMapping("/auth/")
 @CrossOrigin("*")
 @Slf4j
 public class AutController {
