@@ -29,10 +29,15 @@ public class Producto {
     @Column(name = "pro_descripcion")
     private String descripcion;
 
+    @Column(name = "pro_costo")
+    private BigDecimal costo;
+
     @Column(name = "pro_precio1")
     private BigDecimal precio1;
 
     @Column(name = "pro_precio")
-    private BigDecimal precio;
+    private BigDecimal precio2;
 
+    @Column(name = "pro_precio3")
+    private BigDecimal precio3;
 }

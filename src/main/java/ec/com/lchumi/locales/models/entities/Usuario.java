@@ -7,6 +7,7 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -53,7 +54,7 @@ public class Usuario {
     @JoinTable(name = "usuario_almacen",
             joinColumns = @JoinColumn(name = "ua_usuario", referencedColumnName = "usr_id"),
             inverseJoinColumns = @JoinColumn(name = "ua_almacen", referencedColumnName = "alm_id"))
-    private List<Almacen> almacenes;
+    private List<Almacen> almacenes = new ArrayList<>();
 
     public List<Bodega> getBodegas(){
         return this.almacenes.stream()

@@ -24,7 +24,7 @@ public class VentaServiceImpl extends GenericServiceImpl<Venta,Long> implements 
     private final CreditoPagoRepository pagoRepository;
 
     @Override
-    public DetalleVenta agregarDetalle(Long ventaId, DetalleVenta detalle) throws Exception {
+    public DetalleVenta agregarDetalle(Long ventaId, DetalleVenta detalle, int tipoPrecio) throws Exception {
         Venta venta = ventaRepository.findById(ventaId).orElseThrow(() -> new Exception("Venta no encontrada"));
 
         //Validar stock
@@ -36,6 +36,9 @@ public class VentaServiceImpl extends GenericServiceImpl<Venta,Long> implements 
             log.error("Stock insuficiente para el producto {} " , detalle.getProducto().getDescripcion());
             throw new Exception("Stock insuficiente para el producto " + detalle.getProducto().getDescripcion());
         }
+
+        //Set tipo de precio
+        detalle.setTipoPrecio(tipoPrecio);
 
         // Agregar detalle a la venta
         venta.agregarDetalle(detalle);
@@ -83,7 +86,7 @@ public class VentaServiceImpl extends GenericServiceImpl<Venta,Long> implements 
     }
 
     @Override
-    public DetalleVenta actualizarDetalle(Long ventaId, Long detalleId, DetalleVenta detalleVenta) throws Exception {
+    public DetalleVenta actualizarDetalle(Long ventaId, Long detalleId, DetalleVenta detalleVenta, int tipoPrecio) throws Exception {
         Venta venta = ventaRepository.findById(ventaId).orElseThrow(() -> new Exception("Venta no encontrada"));
         DetalleVenta detalleExistente = venta.getDetalleById(detalleId);
 
@@ -110,12 +113,16 @@ public class VentaServiceImpl extends GenericServiceImpl<Venta,Long> implements 
         movimientoInventarioRepository.save(movimiento);
 
         // Actualizar el detalle de la venta
-        venta.actualizarDetalle(detalleId, detalleVenta);
-        detalleVentaRepository.save(venta.getDetalleById(detalleId));
+        detalleExistente.setCantidad(detalleVenta.getCantidad());
+        detalleExistente.setTipoPrecio(tipoPrecio);
+        detalleExistente.setProducto(detalleVenta.getProducto()); // Esto actualiza el precio unitario y el subtotal
+        detalleExistente.actualizarSubtotal();
+        detalleVentaRepository.save(detalleExistente);
         ventaRepository.save(venta);
 
-        return detalleVenta;
+        return detalleExistente;
     }
+
 
     @Override
     public Venta procesarPago(Long ventaId, BigDecimal montoCredito, BigDecimal montoEfectivo, BigDecimal montoTarjeta) throws Exception {

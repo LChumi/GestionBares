@@ -42,6 +42,9 @@ public class DetalleVenta {
     @Column(name = "dventas_subtotal")
     private BigDecimal subtotal;
 
+    @Column(name = "dventas_tipo_precio")
+    private int tipoPrecio; // 1, 2, 3 para indicar el tipo de precio
+
     public BigDecimal getSubtotal() {
         return this.precioUnitario.multiply(BigDecimal.valueOf(this.cantidad));
     }
@@ -51,16 +54,29 @@ public class DetalleVenta {
         setPrecioUnitario();
     }
 
+    public void setPrecio(int tipoPrecio){
+        this.tipoPrecio = tipoPrecio;
+        setPrecioUnitario();
+    }
+
     public void setPrecioUnitario() {
-        if (this.producto != null) {
-            this.precioUnitario = this.producto.getPrecio1();
+        if (this.producto != null){
+            switch (this.tipoPrecio){
+                case 1:
+                    this.precioUnitario = this.producto.getPrecio1();
+                    break;
+                case 2:
+                    this.precioUnitario = this.producto.getPrecio2();
+                    break;
+                case 3:
+                    this.precioUnitario = this.producto.getPrecio3();
+                    break;
+            }
         }
     }
 
     public void actualizarSubtotal() {
-        if (this.producto != null) {
-            this.precioUnitario = this.producto.getPrecio1();
-        }
+        setPrecioUnitario();
         this.subtotal = this.precioUnitario.multiply(BigDecimal.valueOf(this.cantidad));
     }
 }

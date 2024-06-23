@@ -65,8 +65,10 @@ public class ProductoController {
 
             encontrado.setDescripcion(producto.getDescripcion());
             encontrado.setBarra(producto.getBarra());
+            encontrado.setCosto(producto.getCosto());
             encontrado.setPrecio1(producto.getPrecio1());
-            encontrado.setPrecio(producto.getPrecio());
+            encontrado.setPrecio2(producto.getPrecio2());
+            encontrado.setPrecio3(producto.getPrecio3());
 
             Producto actualizado = productoService.save(encontrado);
             return ResponseEntity.ok(actualizado);

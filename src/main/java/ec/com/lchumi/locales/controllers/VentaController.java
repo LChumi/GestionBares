@@ -33,10 +33,10 @@ public class VentaController {
         }
     }
 
-    @PostMapping("{ventaId}/detalles-add")
-    public ResponseEntity<DetalleVenta> agregarDetalle(@PathVariable Long ventaId, @RequestBody DetalleVenta detalleVenta) {
+    @PostMapping("{ventaId}/{tipoPrecio}/detalles-add")
+    public ResponseEntity<DetalleVenta> agregarDetalle(@PathVariable Long ventaId, @RequestBody DetalleVenta detalleVenta, @PathVariable int tipoPrecio) {
         try {
-            DetalleVenta nuevoDetalle = ventaService.agregarDetalle(ventaId,detalleVenta);
+            DetalleVenta nuevoDetalle = ventaService.agregarDetalle(ventaId,detalleVenta,tipoPrecio);
             return ResponseEntity.status(HttpStatus.CREATED).body(nuevoDetalle);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
@@ -53,10 +53,10 @@ public class VentaController {
         }
     }
 
-    @PutMapping("{ventaId}/detalles-put/{detalleId}")
-    public ResponseEntity<DetalleVenta> actualizarDetalle(@PathVariable Long ventaId, @PathVariable Long detalleId, @RequestBody DetalleVenta detalleActualizado) {
+    @PutMapping("{ventaId}/detalles-put/{detalleId}/{tipoPrecio}")
+    public ResponseEntity<DetalleVenta> actualizarDetalle(@PathVariable Long ventaId, @PathVariable Long detalleId, @PathVariable int tipoPrecio, @RequestBody DetalleVenta detalleActualizado) {
         try {
-            DetalleVenta detalle = ventaService.actualizarDetalle(ventaId, detalleId, detalleActualizado);
+            DetalleVenta detalle = ventaService.actualizarDetalle(ventaId, detalleId, detalleActualizado,tipoPrecio);
             return ResponseEntity.ok(detalle);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);

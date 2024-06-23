@@ -10,11 +10,11 @@ import java.math.BigDecimal;
 public interface IVentaService extends IGenericService<Venta, Long>{
 
     @Transactional
-    DetalleVenta agregarDetalle(Long ventaId, DetalleVenta detalleVenta) throws  Exception;
+    DetalleVenta agregarDetalle(Long ventaId, DetalleVenta detalleVenta, int tipoPrecio) throws  Exception;
     @Transactional
     void eliminarDetalle(Long ventaId, Long detalleId) throws Exception;
     @Transactional
-    DetalleVenta actualizarDetalle(Long ventaId, Long detalleId, DetalleVenta detalleVenta) throws Exception;
+    DetalleVenta actualizarDetalle(Long ventaId, Long detalleId, DetalleVenta detalleVenta, int tipoPrecio) throws Exception;
 
     Venta procesarPago(Long ventaId, BigDecimal montoCredito, BigDecimal montoEfectivo, BigDecimal montoTarjeta) throws Exception;
     Cliente pagarCredito(Long clienteId, BigDecimal monto) throws Exception;
