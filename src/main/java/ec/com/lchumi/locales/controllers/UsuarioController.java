@@ -85,7 +85,7 @@ public class UsuarioController {
         }
     }
 
-    @DeleteMapping("borrar/{id}")
+    @DeleteMapping("eliminar/{id}")
     public ResponseEntity<Void> borrar(@PathVariable Long id){
         Usuario encontrado = usuarioService.porId(id);
         if(encontrado == null){
@@ -123,7 +123,7 @@ public class UsuarioController {
         }
     }
 
-    @PostMapping("usuarios/{usuarioId}/almacenes/{almacenId}")
+    @PostMapping("agregar-almacen/{usuarioId}/almacenes/{almacenId}")
     public void agregarAlmacen(@PathVariable Long usuarioId, @PathVariable Long almacenId) {
         try {
             usuarioService.agregarAlmacen(usuarioId, almacenId);
@@ -132,7 +132,7 @@ public class UsuarioController {
         }
     }
 
-    @DeleteMapping("usuarios/{usuarioId}/almacenes/{almacenId}")
+    @DeleteMapping("eliminar-almacen/{usuarioId}/almacenes/{almacenId}")
     public void eliminarAlmacen(@PathVariable Long usuarioId, @PathVariable Long almacenId) {
         try {
             usuarioService.eliminarAlmacen(usuarioId, almacenId);

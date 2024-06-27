@@ -8,7 +8,7 @@ spring:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/baresdb
     username: postgres
-    password: 1234
+    password: 1c3p.2024..
   jpa:
     hibernate:
       ddl-auto: update

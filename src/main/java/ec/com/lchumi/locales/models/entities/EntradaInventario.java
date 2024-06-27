@@ -34,4 +34,8 @@ public class EntradaInventario {
     private int cantidad;
     @Column(name = "ent_inv_fecha")
     private LocalDate fecha;
+
+    @ManyToOne
+    @JoinColumn(name = "ent_inv_usuario", referencedColumnName = "usr_id")
+    private Usuario usuario;
 }

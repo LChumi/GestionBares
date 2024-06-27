@@ -36,4 +36,8 @@ public class MovimientoInventario {
 
     @Column(name = "movinv_fecha")
     private LocalDate fecha;
+
+    @ManyToOne
+    @JoinColumn(name = "movinv_usuario", referencedColumnName = "usr_id")
+    private Usuario usuario;
 }

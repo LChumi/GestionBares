@@ -6,15 +6,15 @@ import jakarta.transaction.Transactional;
 public interface IInventarioService {
 
     @Transactional
-    void agregarStock(Long productoId, Long bodegaId, int cantidad);
+    void agregarStock(Long productoId, Long bodegaId, int cantidad,Long usuarioId);
 
     @Transactional
-    void reducirStock(Long productoId, Long bodegaId, int cantidad) throws Exception;
+    void reducirStock(Long productoId, Long bodegaId, int cantidad,Long usuarioId) throws Exception;
 
     @Transactional
     void registrarEntradaInventaro(EntradaInventario entradaInventario);
 
     @Transactional
-    void transferirProducto(Long productoId, Long bodegaOrigenId, Long bodegaDesitnoId, int cantidad) throws Exception;
+    void transferirProducto(Long productoId, Long bodegaOrigenId, Long bodegaDesitnoId, int cantidad,Long usuarioId) throws Exception;
 
 }

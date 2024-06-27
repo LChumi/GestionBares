@@ -29,9 +29,9 @@ public class InventarioController {
     }
 
     @GetMapping("incrementar-stock/{productoId}/{bodegaId}/{cantidad}")
-    public ResponseEntity<String> incrementarStock(@PathVariable Long productoId, @PathVariable Long bodegaId, @PathVariable int cantidad) {
+    public ResponseEntity<String> incrementarStock(@PathVariable Long productoId, @PathVariable Long bodegaId, @PathVariable int cantidad,@PathVariable Long usuarioId) {
         try {
-            inventarioService.agregarStock(productoId, bodegaId, cantidad);
+            inventarioService.agregarStock(productoId, bodegaId, cantidad,usuarioId);
             return ResponseEntity.ok("Stock incrementado correctamente.");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Error al incrementar stock: " + e.getMessage());
@@ -39,9 +39,9 @@ public class InventarioController {
     }
 
     @DeleteMapping("reducir-stock/{productoId}/{bodegaId}/{cantidad}")
-    public ResponseEntity<String> reducirStock(@PathVariable Long productoId, @PathVariable Long bodegaId, @PathVariable int cantidad) {
+    public ResponseEntity<String> reducirStock(@PathVariable Long productoId, @PathVariable Long bodegaId, @PathVariable int cantidad,@PathVariable Long usuarioId) {
         try {
-            inventarioService.reducirStock(productoId, bodegaId, cantidad);
+            inventarioService.reducirStock(productoId, bodegaId, cantidad,usuarioId);
             return ResponseEntity.ok("Stock reducido correctamente.");
         } catch (Exception e){
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Error al reducir stock: " + e.getMessage());
@@ -49,9 +49,9 @@ public class InventarioController {
     }
 
     @GetMapping("transferir/{productoId}/{bodegaOrigenId}/{bodegaDestinoId}/{cantidad}")
-    public ResponseEntity<String> transferirProducto(@PathVariable Long productoId, @PathVariable Long bodegaOrigenId,@PathVariable Long bodegaDestinoId, @PathVariable int cantidad) {
+    public ResponseEntity<String> transferirProducto(@PathVariable Long productoId, @PathVariable Long bodegaOrigenId,@PathVariable Long bodegaDestinoId, @PathVariable int cantidad ,@PathVariable Long usuarioId) {
         try {
-            inventarioService.transferirProducto(productoId, bodegaOrigenId, bodegaDestinoId, cantidad);
+            inventarioService.transferirProducto(productoId, bodegaOrigenId, bodegaDestinoId, cantidad,usuarioId);
             return ResponseEntity.ok("Transferencia satisfactoria.");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Error al transferir Producto: " + e.getMessage());
