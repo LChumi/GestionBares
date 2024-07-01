@@ -64,6 +64,20 @@ public class UsuarioController {
         }
     }
 
+    @GetMapping("porUsername/{username}")
+    public ResponseEntity<Usuario> porUsername(@PathVariable String username){
+        try{
+            Usuario encontrado = usuarioService.porUsername(username);
+            if (encontrado == null){
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            }
+            return ResponseEntity.ok(encontrado);
+        }catch(Exception e){
+            log.info("Error al interno al buscar por nombre de usuario {}",e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
     @PutMapping("actualizar/{id}")
     public ResponseEntity<Usuario> actualizar(@PathVariable Long id , @Valid @RequestBody Usuario usuario){
         try{
@@ -96,9 +110,9 @@ public class UsuarioController {
     }
 
     @GetMapping("listaBodegas/{usuarioId}")
-    public ResponseEntity<List<Bodega>> listarBodegas(@PathVariable Long usuarioId){
+    public ResponseEntity<List<Bodega>> listarBodegas(@PathVariable String usuarioId){
         try {
-            Usuario encontrado = usuarioService.porId(usuarioId);
+            Usuario encontrado = usuarioService.porUsername(usuarioId);
             if (encontrado == null){
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
             }
