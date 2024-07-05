@@ -17,7 +17,7 @@ public class ProductoServiceImpl extends GenericServiceImpl<Producto,Long> imple
 
     @Override
     public Producto findByNombre(String nombre) {
-        return productoRepository.findByNombre(nombre);
+        return productoRepository.findByDescripcion(nombre);
     }
 
     @Override
