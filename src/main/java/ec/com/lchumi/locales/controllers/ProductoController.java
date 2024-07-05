@@ -93,4 +93,32 @@ public class ProductoController {
         }
     }
 
+    @GetMapping("porNombre/{nombre}")
+    public ResponseEntity<Producto> porNombre(@PathVariable String nombre) {
+        try {
+            Producto encontrado = productoService.findByNombre(nombre);
+            if (encontrado == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            }
+            return ResponseEntity.ok(encontrado);
+        }catch (Exception e){
+            log.error("Error en el servicio buscar producto por nombre {}",e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    @GetMapping("porBarra/{barra}")
+    public ResponseEntity<Producto> porBarra(@PathVariable String barra) {
+        try {
+            Producto encontrado = productoService.findByBarra(barra);
+            if (encontrado == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            }
+            return ResponseEntity.ok(encontrado);
+        }catch (Exception e){
+            log.error("Error en el servicio buscar producto por barra {}",e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
 }

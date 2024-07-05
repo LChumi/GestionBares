@@ -14,4 +14,14 @@ public class ProductoServiceImpl extends GenericServiceImpl<Producto,Long> imple
     public CrudRepository<Producto, Long> getDao() {
         return productoRepository;
     }
+
+    @Override
+    public Producto findByNombre(String nombre) {
+        return productoRepository.findByNombre(nombre);
+    }
+
+    @Override
+    public Producto findByBarra(String barra) {
+        return productoRepository.findByBarra(barra);
+    }
 }
