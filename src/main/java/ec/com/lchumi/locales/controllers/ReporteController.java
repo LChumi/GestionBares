@@ -3,8 +3,11 @@ package ec.com.lchumi.locales.controllers;
 import ec.com.lchumi.locales.models.dto.ClienteCompradorFrecuenteDTO;
 import ec.com.lchumi.locales.models.dto.ClienteMayorDeudaDTO;
 import ec.com.lchumi.locales.models.dto.ProductoMasVendidoDTO;
+import ec.com.lchumi.locales.models.entities.MovimientoInventario;
 import ec.com.lchumi.locales.models.entities.Venta;
+import ec.com.lchumi.locales.services.IMovimientoInventarioService;
 import ec.com.lchumi.locales.services.IReporteService;
+import ec.com.lchumi.locales.services.MovimientoInventarioServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,6 +25,12 @@ public class ReporteController {
 
     @Autowired
     private IReporteService reporteService;
+
+    @Autowired
+    private IMovimientoInventarioService iMovimientoInventarioService;
+    @Autowired
+    private IMovimientoInventarioService movimientoInventarioService;
+    @Autowired
 
     @GetMapping("ventas")
     public ResponseEntity<List<Venta>> obtenerVentasPorFecha(@RequestParam LocalDate fechaInicio, @RequestParam LocalDate fechaFin) {
@@ -67,6 +76,26 @@ public class ReporteController {
     public ResponseEntity<List<ClienteCompradorFrecuenteDTO>> obtenerClineteMasFrecuente() {
         try {
             return ResponseEntity.ok(reporteService.obtenerClineteMaFrecuentes());
+        }catch (Exception e){
+            log.error(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    @GetMapping("lista-movimientos")
+    public ResponseEntity<List<MovimientoInventario>> listaMovimientos(){
+        try {
+            return ResponseEntity.ok(movimientoInventarioService.listarPorFecha());
+        }catch (Exception e){
+            log.error(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    @GetMapping("lista-movimientos-fechas")
+    public ResponseEntity<List<MovimientoInventario>> listarMovEntreFechas(@RequestParam LocalDate fechaInicial, @RequestParam LocalDate fechaFin){
+        try {
+            return ResponseEntity.ok(movimientoInventarioService.listarEntreFechas(fechaInicial,fechaFin));
         }catch (Exception e){
             log.error(e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
