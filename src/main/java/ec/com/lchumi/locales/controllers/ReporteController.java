@@ -7,9 +7,9 @@ import ec.com.lchumi.locales.models.entities.MovimientoInventario;
 import ec.com.lchumi.locales.models.entities.Venta;
 import ec.com.lchumi.locales.services.IMovimientoInventarioService;
 import ec.com.lchumi.locales.services.IReporteService;
-import ec.com.lchumi.locales.services.MovimientoInventarioServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,12 +25,8 @@ public class ReporteController {
 
     @Autowired
     private IReporteService reporteService;
-
-    @Autowired
-    private IMovimientoInventarioService iMovimientoInventarioService;
     @Autowired
     private IMovimientoInventarioService movimientoInventarioService;
-    @Autowired
 
     @GetMapping("ventas")
     public ResponseEntity<List<Venta>> obtenerVentasPorFecha(@RequestParam LocalDate fechaInicio, @RequestParam LocalDate fechaFin) {
@@ -62,7 +58,7 @@ public class ReporteController {
         }
     }
 
-    @GetMapping("clinetes-mayor-deuda")
+    @GetMapping("clientes-mayor-deuda")
     public ResponseEntity<List<ClienteMayorDeudaDTO>> obtenerClinetesConMayorDeuda(){
         try {
             return ResponseEntity.ok(reporteService.obtenerClientesConMayorDeuda());
@@ -93,7 +89,7 @@ public class ReporteController {
     }
 
     @GetMapping("lista-movimientos-fechas")
-    public ResponseEntity<List<MovimientoInventario>> listarMovEntreFechas(@RequestParam LocalDate fechaInicial, @RequestParam LocalDate fechaFin){
+    public ResponseEntity<List<MovimientoInventario>> listarMovEntreFechas(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fechaInicial, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fechaFin){
         try {
             return ResponseEntity.ok(movimientoInventarioService.listarEntreFechas(fechaInicial,fechaFin));
         }catch (Exception e){
