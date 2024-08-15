@@ -12,6 +12,4 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-    database: postgresql
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
     show-sql: true

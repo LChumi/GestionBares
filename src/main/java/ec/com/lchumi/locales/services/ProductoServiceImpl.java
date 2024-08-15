@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ProductoServiceImpl extends GenericServiceImpl<Producto,Long> implements IProductoService {
     @Autowired
@@ -23,5 +25,10 @@ public class ProductoServiceImpl extends GenericServiceImpl<Producto,Long> imple
     @Override
     public Producto findByBarra(String barra) {
         return productoRepository.findByBarra(barra);
+    }
+
+    @Override
+    public List<Producto> findByNombreOrBarra(String data) {
+        return productoRepository.findByDescripcionOrBarra(data);
     }
 }

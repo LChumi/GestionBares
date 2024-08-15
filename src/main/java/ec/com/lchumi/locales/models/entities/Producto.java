@@ -35,7 +35,7 @@ public class Producto {
     @Column(name = "pro_precio1")
     private BigDecimal precio1;
 
-    @Column(name = "pro_precio")
+    @Column(name = "pro_precio2")
     private BigDecimal precio2;
 
     @Column(name = "pro_precio3")
