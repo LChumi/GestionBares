@@ -1,12 +1,14 @@
 package ec.com.lchumi.locales;
 
-import ec.com.lchumi.locales.config.OpenAPIConfiguration;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.info.Info;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Import;
 
 @SpringBootApplication
-@Import(OpenAPIConfiguration.class)
+@OpenAPIDefinition(info =
+@Info(title = "Gestion de Locales", version = "${springdoc.version}", description = "Documentacion Gestion de Locales v1.0")
+)
 public class LocalesApplication {
 
 	public static void main(String[] args) {
