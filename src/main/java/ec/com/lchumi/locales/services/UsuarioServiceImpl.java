@@ -27,12 +27,12 @@ public class UsuarioServiceImpl extends GenericServiceImpl<Usuario,Long> impleme
     @Override
     public UserRequest login(UserRequest userRequest) {
         try {
-            Usuario usuario=usuarioRepository.findByNombreUsuarioAndPassword(userRequest.getUsername(), userRequest.getPassword());
+            Usuario usuario=usuarioRepository.findByNombreUsuarioAndPassword(userRequest.username(), userRequest.password());
             if (usuario == null ){
                 log.error("Usuario no Encontrado");
                 return null;
             }
-            return UserRequest.builder().username(usuario.getNombreUsuario()).password(usuario.getPassword()).build();
+            return new UserRequest(usuario.getNombreUsuario(),usuario.getPassword());
         }catch (Exception e){
             return null;
         }

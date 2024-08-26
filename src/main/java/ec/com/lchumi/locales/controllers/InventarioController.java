@@ -28,7 +28,7 @@ public class InventarioController {
         }
     }
 
-    @GetMapping("incrementar-stock/{productoId}/{bodegaId}/{cantidad}")
+    @GetMapping("incrementar-stock/{productoId}/{bodegaId}/{cantidad}/{usuarioId}")
     public ResponseEntity<String> incrementarStock(@PathVariable Long productoId, @PathVariable Long bodegaId, @PathVariable int cantidad,@PathVariable Long usuarioId) {
         try {
             inventarioService.agregarStock(productoId, bodegaId, cantidad,usuarioId);
