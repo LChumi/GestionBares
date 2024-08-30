@@ -23,6 +23,7 @@ public class VentaServiceImpl extends GenericServiceImpl<Venta,Long> implements 
     private final DetalleVentaRepository detalleVentaRepository;
     private final ClienteRepository clienteRepository;
     private final CreditoPagoRepository pagoRepository;
+    private final UsuarioRepository usuarioRepository;
 
     @Override
     public DetalleVenta agregarDetalle(Long ventaId, DetalleVenta detalle, int tipoPrecio) throws Exception {
@@ -197,9 +198,10 @@ public class VentaServiceImpl extends GenericServiceImpl<Venta,Long> implements 
     }
 
     @Override
-    public List<Venta> buscarEstado() {
+    public List<Venta> buscarEstado(Long usuarioId) throws Exception {
+        Usuario usuario = usuarioRepository.findById(usuarioId).orElseThrow(()-> new Exception("Usuario no encontrado"));
         LocalDate fechaActual = LocalDate.now();
-        return ventaRepository.findByFechaAndEstado(fechaActual,false);
+        return ventaRepository.findByFechaAndEstadoAndUsuario(fechaActual,false, usuario);
     }
 
     @Override

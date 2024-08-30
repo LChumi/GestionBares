@@ -98,4 +98,14 @@ public class VentaController {
         }
     }
 
+    @GetMapping("listar-pendientes/{usuarioId}")
+    public  ResponseEntity<List<Venta>> listarPendientes(@PathVariable Long usuarioId){
+        try {
+            List<Venta> ventas =ventaService.buscarEstado(usuarioId);
+            return ResponseEntity.ok(ventas);
+        }catch (Exception e){
+            return ResponseEntity.noContent().build();
+        }
+    }
+
 }
