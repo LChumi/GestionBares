@@ -6,6 +6,7 @@ import ec.com.lchumi.locales.models.entities.Venta;
 import jakarta.transaction.Transactional;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 public interface IVentaService extends IGenericService<Venta, Long>{
 
@@ -18,4 +19,6 @@ public interface IVentaService extends IGenericService<Venta, Long>{
 
     Venta procesarPago(Long ventaId, BigDecimal montoCredito, BigDecimal montoEfectivo, BigDecimal montoTarjeta) throws Exception;
     Cliente pagarCredito(Long clienteId, BigDecimal monto) throws Exception;
+
+    List<Venta> buscarEstado();
 }

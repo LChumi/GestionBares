@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 @Slf4j
@@ -193,6 +194,12 @@ public class VentaServiceImpl extends GenericServiceImpl<Venta,Long> implements 
         clienteRepository.save(cliente);
 
         return cliente;
+    }
+
+    @Override
+    public List<Venta> buscarEstado() {
+        LocalDate fechaActual = LocalDate.now();
+        return ventaRepository.findByFechaAndEstado(fechaActual,false);
     }
 
     @Override

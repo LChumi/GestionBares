@@ -35,6 +35,9 @@ public class Venta {
     @Column(name = "vent_forma_pago")
     private String formaPago;
 
+    @Column(name = "vent_estado")
+    private Boolean estado=false;
+
     @JsonIgnore
     @OneToMany(mappedBy = "venta", cascade = CascadeType.ALL , orphanRemoval = true)
     private List<DetalleVenta> detalles = new ArrayList<>();
