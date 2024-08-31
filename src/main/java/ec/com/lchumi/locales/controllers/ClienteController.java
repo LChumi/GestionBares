@@ -3,6 +3,7 @@ package ec.com.lchumi.locales.controllers;
 import ec.com.lchumi.locales.models.entities.Cliente;
 import ec.com.lchumi.locales.services.IClienteService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.DecimalMin;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -94,13 +95,31 @@ public class ClienteController {
     }
 
     @PostMapping("{clienteId}/credito")
-    public ResponseEntity<String> actualizarCredito(@PathVariable Long clienteId, @RequestBody BigDecimal monto){
+    public ResponseEntity<?> actualizarCredito(
+            @PathVariable Long clienteId,
+            @RequestBody @Valid @DecimalMin(value = "0.0", inclusive = false) BigDecimal monto) {
+
         try {
             clienteService.actualizarCredito(clienteId, monto);
-            return ResponseEntity.status(HttpStatus.OK).body("Credito actualizado exitosamente");
-        }catch (Exception e){
-            log.error("Error en el servicio actualizarCredito {}",e.getMessage());
+            return ResponseEntity.status(HttpStatus.ACCEPTED).build();
+        } catch (IllegalArgumentException e) {
+            log.error("Monto inválido: {}", monto, e);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Monto inválido");
+        } catch (Exception e) {
+            log.error("Error en el servicio actualizarCredito", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error interno del servidor");
+        }
+    }
+
+    @GetMapping("buscar-cliente/{data}")
+    public ResponseEntity<Object> buscarCliente(@PathVariable String data) {
+        try {
+            Object o = clienteService.buscarCliente(data);
+            return ResponseEntity.ok(o);
+        } catch (Exception e) {
+            log.error("Error en el servicio buscarCliente {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
 }

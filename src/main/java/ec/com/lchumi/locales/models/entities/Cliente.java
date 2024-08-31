@@ -22,6 +22,9 @@ public class Cliente {
     @Column(name = "cli_id")
     private Long id;
 
+    @Column(name = "cli_cedula", unique = true)
+    private String cedula;
+
     @Column(name = "cli_nombre")
     private String nombre;
 

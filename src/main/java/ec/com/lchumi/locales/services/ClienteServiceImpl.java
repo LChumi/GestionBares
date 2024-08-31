@@ -7,6 +7,8 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.Collections;
+import java.util.List;
 
 @Service
 public class ClienteServiceImpl extends GenericServiceImpl<Cliente,Long> implements IClienteService {
@@ -24,4 +26,17 @@ public class ClienteServiceImpl extends GenericServiceImpl<Cliente,Long> impleme
         cliente.setCupo(cliente.getCupo().add(monto));
         clienteRepository.save(cliente);
     }
+
+    @Override
+    public Object buscarCliente(String data) {
+        List<Cliente> clientes = clienteRepository.findByData(data);
+        if (clientes.isEmpty()) {
+            return Collections.emptyList(); // No se encontraron clientes
+        } else if (clientes.size() == 1) {
+            return clientes.get(0); // Un solo cliente encontrado
+        } else {
+            return clientes; // Más de un cliente encontrado
+        }
+    }
+
 }
