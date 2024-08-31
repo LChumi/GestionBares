@@ -12,6 +12,6 @@ public interface ProductoRepository extends JpaRepository<Producto,Long> {
     Producto findByDescripcion(String nombre);
 
     @Query("SELECT p FROM Producto p WHERE LOWER(p.descripcion) LIKE LOWER(CONCAT('%', :searchTerm, '%')) OR p.barra = :searchTerm")
-    Object findByDescripcionOrBarra(@Param("searchTerm") String searchTerm);
+    List<Producto> findByDescripcionOrBarra(@Param("searchTerm") String searchTerm);
 
 }
