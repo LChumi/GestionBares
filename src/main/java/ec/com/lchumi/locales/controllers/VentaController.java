@@ -32,6 +32,23 @@ public class VentaController {
             return ResponseEntity.badRequest().body(null);
         }
     }
+    
+    @PutMapping("modificar-venta/{id}")
+    public ResponseEntity<Venta> modificarVenta(@RequestBody Venta venta, @PathVariable Long id) {
+        try {
+            Venta ventaEncontrada = ventaService.porId(id);
+            if (ventaEncontrada == null) {
+                return ResponseEntity.notFound().build();
+            } else {
+                ventaEncontrada.setCliente(venta.getCliente());
+                Venta actualizada= ventaService.save(ventaEncontrada);
+                return ResponseEntity.ok(actualizada);
+            }
+        }catch (Exception e){
+            log.error("Error al modificar venta", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 
     @PostMapping("{ventaId}/{tipoPrecio}/detalles-add")
     public ResponseEntity<DetalleVenta> agregarDetalle(@PathVariable Long ventaId, @RequestBody DetalleVenta detalleVenta, @PathVariable int tipoPrecio) {
