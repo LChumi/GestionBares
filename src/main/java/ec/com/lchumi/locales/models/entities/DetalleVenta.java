@@ -1,5 +1,6 @@
 package ec.com.lchumi.locales.models.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Data;
@@ -43,6 +44,11 @@ public class DetalleVenta {
 
     @Column(name = "dventas_tipo_precio")
     private int tipoPrecio; // 1, 2, 3 para indicar el tipo de precio
+
+    @JsonBackReference
+    public Venta getVenta(){
+        return venta;
+    }
 
     public BigDecimal getSubtotal() {
         return this.precioUnitario.multiply(BigDecimal.valueOf(this.cantidad));

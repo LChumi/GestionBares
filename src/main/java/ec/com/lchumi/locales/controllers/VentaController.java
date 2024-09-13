@@ -124,5 +124,4 @@ public class VentaController {
             return ResponseEntity.noContent().build();
         }
     }
-
 }

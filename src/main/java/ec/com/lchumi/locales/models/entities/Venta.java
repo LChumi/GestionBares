@@ -1,6 +1,8 @@
 package ec.com.lchumi.locales.models.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Data;
@@ -38,7 +40,7 @@ public class Venta {
     @Column(name = "vent_estado")
     private Boolean estado=false;
 
-    @JsonIgnore
+    @JsonManagedReference
     @OneToMany(mappedBy = "venta", cascade = CascadeType.ALL , orphanRemoval = true)
     private List<DetalleVenta> detalles = new ArrayList<>();
 
