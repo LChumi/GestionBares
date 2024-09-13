@@ -26,7 +26,7 @@ public class VentaServiceImpl extends GenericServiceImpl<Venta,Long> implements 
     private final UsuarioRepository usuarioRepository;
 
     @Override
-    public DetalleVenta agregarDetalle(Long ventaId, DetalleVenta detalle, int tipoPrecio) throws Exception {
+    public Venta agregarDetalle(Long ventaId, DetalleVenta detalle, int tipoPrecio) throws Exception {
         Venta venta = ventaRepository.findById(ventaId).orElseThrow(() -> new Exception("Venta no encontrada"));
 
         //Validar stock
@@ -59,7 +59,7 @@ public class VentaServiceImpl extends GenericServiceImpl<Venta,Long> implements 
         movimiento.setFecha(LocalDate.now());
         movimientoInventarioRepository.save(movimiento);
 
-        return detalle;
+        return venta;
     }
 
     @Override
@@ -174,6 +174,7 @@ public class VentaServiceImpl extends GenericServiceImpl<Venta,Long> implements 
         }
 
         ventaEncontrada.setFormaPago(String.format("credito: %s, efectivo: %s, tarjeta: %s", montoCredito, montoEfectivo, montoTarjeta));
+        ventaEncontrada.setEstado(true);
         ventaRepository.save(ventaEncontrada);
         clienteRepository.save(cliente);
 

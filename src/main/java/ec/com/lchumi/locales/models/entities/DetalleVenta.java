@@ -2,15 +2,15 @@ package ec.com.lchumi.locales.models.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 
-@Data
 @Entity
 @Table(name = "detventas")
+@ToString(exclude = "venta")
+@Getter
+@Setter
 public class DetalleVenta {
 
     @Id
@@ -21,6 +21,7 @@ public class DetalleVenta {
 
     @ManyToOne
     @JoinColumn(name = "dventas_venta", referencedColumnName = "vent_id")
+    @JsonBackReference
     private Venta venta;
 
     @ManyToOne

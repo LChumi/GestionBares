@@ -51,10 +51,10 @@ public class VentaController {
     }
 
     @PostMapping("{ventaId}/{tipoPrecio}/detalles-add")
-    public ResponseEntity<DetalleVenta> agregarDetalle(@PathVariable Long ventaId, @RequestBody DetalleVenta detalleVenta, @PathVariable int tipoPrecio) {
+    public ResponseEntity<Venta> agregarDetalle(@PathVariable Long ventaId, @RequestBody DetalleVenta detalleVenta, @PathVariable int tipoPrecio) {
         try {
-            DetalleVenta nuevoDetalle = ventaService.agregarDetalle(ventaId,detalleVenta,tipoPrecio);
-            return ResponseEntity.status(HttpStatus.CREATED).body(nuevoDetalle);
+            Venta venta = ventaService.agregarDetalle(ventaId,detalleVenta,tipoPrecio);
+            return ResponseEntity.status(HttpStatus.CREATED).body(venta);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }

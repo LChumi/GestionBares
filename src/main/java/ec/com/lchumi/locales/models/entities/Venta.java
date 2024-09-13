@@ -1,12 +1,8 @@
 package ec.com.lchumi.locales.models.entities;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -15,7 +11,9 @@ import java.util.List;
 
 @Entity
 @Table(name = "venta")
-@Data
+@Getter
+@Setter
+@ToString(exclude = "detalles")
 public class Venta {
 
     @Id
@@ -40,8 +38,8 @@ public class Venta {
     @Column(name = "vent_estado")
     private Boolean estado=false;
 
-    @JsonManagedReference
     @OneToMany(mappedBy = "venta", cascade = CascadeType.ALL , orphanRemoval = true)
+    @JsonManagedReference
     private List<DetalleVenta> detalles = new ArrayList<>();
 
     @ManyToOne

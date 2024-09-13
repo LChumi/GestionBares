@@ -11,7 +11,7 @@ import java.util.List;
 public interface IVentaService extends IGenericService<Venta, Long>{
 
     @Transactional
-    DetalleVenta agregarDetalle(Long ventaId, DetalleVenta detalleVenta, int tipoPrecio) throws  Exception;
+    Venta agregarDetalle(Long ventaId, DetalleVenta detalleVenta, int tipoPrecio) throws  Exception;
     @Transactional
     void eliminarDetalle(Long ventaId, Long detalleId) throws Exception;
     @Transactional
