@@ -51,6 +51,7 @@ public class Venta {
         for (DetalleVenta existente : this.detalles) {
             if (existente.getProducto().getId().equals(detalle.getProducto().getId()) && existente.getBodega().getId().equals(detalle.getBodega().getId())) {
                 int nuevaCantidad = existente.getCantidad() + (detalle.getCantidad() > 0 ? detalle.getCantidad() : 1);
+                existente.setCantidad(nuevaCantidad);
                 existente.actualizarSubtotal();  // Actualizar el subtotal del detalle existente
                 found = true;
                 break;

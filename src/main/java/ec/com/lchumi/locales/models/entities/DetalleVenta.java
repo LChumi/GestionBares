@@ -46,22 +46,12 @@ public class DetalleVenta {
     @Column(name = "dventas_tipo_precio")
     private int tipoPrecio; // 1, 2, 3 para indicar el tipo de precio
 
-    @JsonBackReference
-    public Venta getVenta(){
-        return venta;
-    }
-
     public BigDecimal getSubtotal() {
         return this.precioUnitario.multiply(BigDecimal.valueOf(this.cantidad));
     }
 
     public void setProducto(Producto producto) {
         this.producto = producto;
-        setPrecioUnitario();
-    }
-
-    public void setPrecio(int tipoPrecio){
-        this.tipoPrecio = tipoPrecio;
         setPrecioUnitario();
     }
 

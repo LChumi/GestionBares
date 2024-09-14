@@ -57,6 +57,7 @@ public class VentaServiceImpl extends GenericServiceImpl<Venta,Long> implements 
         movimiento.setBodega(detalle.getBodega());
         movimiento.setTipo(TipoMovimientoEnum.SALIDA);
         movimiento.setFecha(LocalDate.now());
+        movimiento.setUsuario(venta.getUsuario());
         movimientoInventarioRepository.save(movimiento);
 
         return venta;
@@ -79,6 +80,7 @@ public class VentaServiceImpl extends GenericServiceImpl<Venta,Long> implements 
         movimiento.setBodega(detalle.getBodega());
         movimiento.setTipo(TipoMovimientoEnum.ENTRADA);
         movimiento.setFecha(LocalDate.now());
+        movimiento.setUsuario(venta.getUsuario());
         movimientoInventarioRepository.save(movimiento);
 
         //Eliminar el detalle del repositorio
@@ -112,6 +114,7 @@ public class VentaServiceImpl extends GenericServiceImpl<Venta,Long> implements 
         movimiento.setBodega(detalleVenta.getBodega());
         movimiento.setTipo(diferenciaCantidad > 0 ? TipoMovimientoEnum.SALIDA : TipoMovimientoEnum.ENTRADA);
         movimiento.setFecha(LocalDate.now());
+        movimiento.setUsuario(venta.getUsuario());
         movimientoInventarioRepository.save(movimiento);
 
         // Actualizar el detalle de la venta
