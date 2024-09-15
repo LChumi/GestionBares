@@ -39,4 +39,9 @@ public class ClienteServiceImpl extends GenericServiceImpl<Cliente,Long> impleme
         }
     }
 
+    @Override
+    public Cliente findByCedula(String cedula) {
+        return clienteRepository.findByCedula(cedula);
+    }
+
 }

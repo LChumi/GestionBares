@@ -20,7 +20,7 @@ public class AlmacenProducto {
     private Producto producto;
 
     @ManyToOne
-    @JoinColumn(name = "alm_prod_bodega")
+    @JoinColumn(name = "alm_prod_bodega", referencedColumnName = "bod_id")
     private Bodega bodega;
 
     @Column(name = "stock")

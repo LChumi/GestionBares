@@ -9,4 +9,5 @@ public interface IClienteService extends IGenericService<Cliente,Long> {
 
     void actualizarCredito(Long clienteId, BigDecimal monto);
     Object buscarCliente(String data);
+    Cliente findByCedula(String cedula);
 }

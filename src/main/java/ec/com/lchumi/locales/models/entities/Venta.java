@@ -26,6 +26,7 @@ public class Venta {
     private LocalDate fecha;
 
     @ManyToOne
+    @JoinColumn(name = "vent_cliente", referencedColumnName = "cli_id")
     private Cliente cliente;
 
     @Setter(AccessLevel.NONE)
