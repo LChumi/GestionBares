@@ -1,5 +1,6 @@
 package ec.com.lchumi.locales.controllers;
 
+import ec.com.lchumi.locales.models.entities.AlmacenProducto;
 import ec.com.lchumi.locales.models.entities.Producto;
 import ec.com.lchumi.locales.services.IProductoService;
 import lombok.extern.slf4j.Slf4j;
@@ -132,6 +133,17 @@ public class ProductoController {
         }catch (Exception e){
             log.error("Error en el servicio buscar producto por barra o descripcion {}",e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    @GetMapping("productos-almacen")
+    public ResponseEntity<List<AlmacenProducto>> findAllProducts(){
+        try {
+            List<AlmacenProducto> productos = productoService.listarProductos();
+            return ResponseEntity.ok(productos);
+        }catch (Exception e){
+            log.error("Error en el servicio buscar productos- almacen{}",e.getMessage());
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
         }
     }
 

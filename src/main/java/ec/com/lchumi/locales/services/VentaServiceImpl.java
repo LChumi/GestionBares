@@ -211,7 +211,8 @@ public class VentaServiceImpl extends GenericServiceImpl<Venta,Long> implements 
     @Override
     public BigDecimal obtenerTotales() throws Exception {
         LocalDate fechaHoy=LocalDate.now();
-        return ventaRepository.findTotalFecha(fechaHoy);
+        BigDecimal total = ventaRepository.findTotalFecha(fechaHoy);
+        return total != null ? total : BigDecimal.ZERO;
     }
 
     @Override
