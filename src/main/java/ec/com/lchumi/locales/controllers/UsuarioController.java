@@ -138,20 +138,24 @@ public class UsuarioController {
     }
 
     @PostMapping("agregar-almacen/{usuarioId}/almacenes/{almacenId}")
-    public void agregarAlmacen(@PathVariable Long usuarioId, @PathVariable Long almacenId) {
+    public ResponseEntity<Usuario> agregarAlmacen(@PathVariable Long usuarioId, @PathVariable Long almacenId) {
         try {
-            usuarioService.agregarAlmacen(usuarioId, almacenId);
+            Usuario usuario= usuarioService.agregarAlmacen(usuarioId, almacenId);
+            return ResponseEntity.ok(usuario);
         }catch (Exception e){
             log.error(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
     }
 
     @DeleteMapping("eliminar-almacen/{usuarioId}/almacenes/{almacenId}")
-    public void eliminarAlmacen(@PathVariable Long usuarioId, @PathVariable Long almacenId) {
+    public ResponseEntity<Usuario> eliminarAlmacen(@PathVariable Long usuarioId, @PathVariable Long almacenId) {
         try {
-            usuarioService.eliminarAlmacen(usuarioId, almacenId);
+            Usuario usuario= usuarioService.eliminarAlmacen(usuarioId, almacenId);
+            return ResponseEntity.ok(usuario);
         }catch (Exception e){
             log.error(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
     }
 

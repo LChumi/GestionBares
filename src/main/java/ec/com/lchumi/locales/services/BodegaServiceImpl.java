@@ -16,4 +16,9 @@ public class BodegaServiceImpl extends GenericServiceImpl<Bodega,Long> implement
     public CrudRepository<Bodega, Long> getDao() {
         return bodegaRepository;
     }
+
+    @Override
+    public Bodega findByNombre(String nombre) {
+        return bodegaRepository.findByNombre(nombre);
+    }
 }

@@ -209,6 +209,12 @@ public class VentaServiceImpl extends GenericServiceImpl<Venta,Long> implements 
     }
 
     @Override
+    public BigDecimal obtenerTotales() throws Exception {
+        LocalDate fechaHoy=LocalDate.now();
+        return ventaRepository.findTotalFecha(fechaHoy);
+    }
+
+    @Override
     public CrudRepository<Venta, Long> getDao() {
         return ventaRepository;
     }

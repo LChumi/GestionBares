@@ -53,7 +53,7 @@ public class UsuarioServiceImpl extends GenericServiceImpl<Usuario,Long> impleme
     }
 
     @Override
-    public void agregarAlmacen(Long usuarioId, Long almacenId) {
+    public Usuario agregarAlmacen(Long usuarioId, Long almacenId) {
         Usuario usuario = usuarioRepository.findById(usuarioId).orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
         Almacen almacen = almacenRepository.findById(almacenId).orElseThrow(()-> new IllegalArgumentException("Almacen no enconrado"));
 
@@ -63,10 +63,11 @@ public class UsuarioServiceImpl extends GenericServiceImpl<Usuario,Long> impleme
 
         usuario.addAlmacen(almacen);
         usuarioRepository.save(usuario);
+        return usuario;
     }
 
     @Override
-    public void eliminarAlmacen(Long usuarioId, Long almacenId) {
+    public Usuario eliminarAlmacen(Long usuarioId, Long almacenId) {
         Usuario usuario = usuarioRepository.findById(usuarioId)
                 .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
         Almacen almacen = almacenRepository.findById(almacenId)
@@ -74,5 +75,6 @@ public class UsuarioServiceImpl extends GenericServiceImpl<Usuario,Long> impleme
 
         usuario.removeAlmacen(almacen);
         usuarioRepository.save(usuario);
+        return usuario;
     }
 }

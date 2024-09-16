@@ -15,4 +15,9 @@ public class ProveedorServiceImpl extends GenericServiceImpl<Proveedor,Long> imp
     public CrudRepository<Proveedor, Long> getDao() {
         return proveedorRepository;
     }
+
+    @Override
+    public Proveedor findByCedRuc(String cedRuc) {
+        return proveedorRepository.findByCedulaRuc(cedRuc);
+    }
 }

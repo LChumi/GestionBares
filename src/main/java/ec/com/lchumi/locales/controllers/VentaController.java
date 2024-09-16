@@ -124,4 +124,13 @@ public class VentaController {
             return ResponseEntity.noContent().build();
         }
     }
+
+    @GetMapping("totales")
+    public BigDecimal totales(){
+        try {
+            return ventaService.obtenerTotales();
+        } catch (Exception e) {
+            return BigDecimal.ZERO;
+        }
+    }
 }

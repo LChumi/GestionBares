@@ -25,6 +25,9 @@ public class Proveedor {
     @Column(name = "prov_nombre")
     private String nombre;
 
+    @Column(name = "prov_ced_ruc", unique = true)
+    private String cedulaRuc;
+
     @Column(name = "prov_telefono")
     private String telefono;
 

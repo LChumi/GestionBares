@@ -20,6 +20,11 @@ public class AlmacenServiceImpl extends GenericServiceImpl<Almacen,Long> impleme
     }
 
     @Override
+    public Almacen buscarAlmacenPorNombre(String nombre) {
+        return almacenRepository.findByNombre(nombre);
+    }
+
+    @Override
     public CrudRepository<Almacen, Long> getDao() {
         return almacenRepository;
     }

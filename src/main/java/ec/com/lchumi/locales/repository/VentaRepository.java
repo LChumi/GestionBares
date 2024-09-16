@@ -8,6 +8,7 @@ import ec.com.lchumi.locales.models.entities.Venta;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -28,5 +29,10 @@ public interface VentaRepository extends JpaRepository<Venta,Long> {
     @Query("SELECT new ec.com.lchumi.locales.models.dto.ClienteCompradorFrecuenteDTO(c.id, c.nombre, COUNT(v.id)) " +
             "FROM Venta v JOIN v.cliente c GROUP BY c.id ORDER BY COUNT(v.id) DESC")
     List<ClienteCompradorFrecuenteDTO> findClientesMasFrecuentes();
+
+    @Query("SELECT SUM(v.total) FROM Venta v WHERE v.fecha =:fecha")
+    BigDecimal findTotalFecha(LocalDate fecha);
+
+
 
 }

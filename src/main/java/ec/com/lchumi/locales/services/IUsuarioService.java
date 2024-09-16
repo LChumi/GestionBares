@@ -9,7 +9,7 @@ public interface IUsuarioService extends IGenericService<Usuario,Long> {
     UserRequest login(UserRequest userRequest);
     Usuario porUsername(String username);
     @Transactional
-    void agregarAlmacen(Long usuarioId, Long almacenId);
+    Usuario agregarAlmacen(Long usuarioId, Long almacenId);
     @Transactional
-    void eliminarAlmacen(Long usuarioId, Long almacenId);
+    Usuario eliminarAlmacen(Long usuarioId, Long almacenId);
 }

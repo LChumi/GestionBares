@@ -1,13 +1,8 @@
 package ec.com.lchumi.locales.context;
 
-import ec.com.lchumi.locales.models.entities.Cliente;
-import ec.com.lchumi.locales.models.entities.Rol;
-import ec.com.lchumi.locales.models.entities.Usuario;
+import ec.com.lchumi.locales.models.entities.*;
 import ec.com.lchumi.locales.models.enums.RolEnum;
-import ec.com.lchumi.locales.services.IClienteService;
-import ec.com.lchumi.locales.services.IRolService;
-import ec.com.lchumi.locales.services.IUsuarioService;
-import ec.com.lchumi.locales.services.UsuarioServiceImpl;
+import ec.com.lchumi.locales.services.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -21,6 +16,9 @@ public class DataInitializer implements CommandLineRunner {
     private final IRolService rolService;
     private final IUsuarioService usuarioService;
     private final IClienteService clienteService;
+    private final IAlmacenService almacenService;
+    private final IBodegaService bodegaService;
+    private final IProveedorService proveedorService;
 
     @Override
     public void run(String... args) throws Exception {
@@ -30,6 +28,11 @@ public class DataInitializer implements CommandLineRunner {
         }
         guardarUsuarioSiNoExiste();
         guardarClienteSiNoExiste();
+        guardarAlmacenSiNoExiste("Barmacia");
+        guardarAlmacenSiNoExiste("Punto Cero");
+        guardarBodegaSiNoExiste("Bodega Barmacia","Barmacia");
+        guardarBodegaSiNoExiste("Bodega Punto Cero","Punto Cero");
+        guardarProveedorSiNoExiste("9999999999");
     }
 
     private void guardarUsuarioSiNoExiste(){
@@ -66,6 +69,33 @@ public class DataInitializer implements CommandLineRunner {
             rol.setCodigo(codigo);
             rol.setDescripcion(codigo.name());
             rolService.save(rol);
+        }
+    }
+
+    private void guardarAlmacenSiNoExiste(String almNombre){
+        if (almacenService.buscarAlmacenPorNombre(almNombre) == null){
+            Almacen almacen = new Almacen();
+            almacen.setNombre(almNombre);
+            almacenService.save(almacen);
+        }
+    }
+    private void guardarBodegaSiNoExiste(String bodNombre, String almNombre){
+        if (bodegaService.findByNombre(bodNombre) == null){
+            Almacen almacen = almacenService.buscarAlmacenPorNombre(almNombre);
+            Bodega bodega = new Bodega();
+            bodega.setNombre(bodNombre);
+            bodega.setAlmacen(almacen);
+            bodegaService.save(bodega);
+        }
+    }
+    private void guardarProveedorSiNoExiste(String cedRuc){
+        if (proveedorService.findByCedRuc(cedRuc) == null){
+            Proveedor proveedor = new Proveedor();
+            proveedor.setNombre("Proveedor ST");
+            proveedor.setCedulaRuc(cedRuc);
+            proveedor.setTelefono("9999999999");
+            proveedor.setDireccion("S/N");
+            proveedorService.save(proveedor);
         }
     }
 }

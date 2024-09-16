@@ -21,4 +21,6 @@ public interface IVentaService extends IGenericService<Venta, Long>{
     Cliente pagarCredito(Long clienteId, BigDecimal monto) throws Exception;
 
     List<Venta> buscarEstado(Long usuarioId) throws Exception;
+
+    BigDecimal obtenerTotales() throws Exception;
 }

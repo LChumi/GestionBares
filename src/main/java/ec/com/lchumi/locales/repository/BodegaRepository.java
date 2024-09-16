@@ -4,4 +4,5 @@ import ec.com.lchumi.locales.models.entities.Bodega;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface BodegaRepository extends JpaRepository<Bodega,Long> {
+    Bodega findByNombre(String nombre);
 }
