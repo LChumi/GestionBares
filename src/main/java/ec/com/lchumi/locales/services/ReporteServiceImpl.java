@@ -18,8 +18,8 @@ public class ReporteServiceImpl implements IReporteService {
     private VentaRepository ventaRepository;
 
     @Override
-    public List<Venta> obtenerVentasPorFecha(LocalDate startDate, LocalDate endDate) {
-        return ventaRepository.findByFechaBetween(startDate, endDate);
+    public List<Venta> obtenerVentasPorFecha(LocalDate fechaInicial, LocalDate fechaFinal) {
+        return ventaRepository.findByFechaBetween(fechaInicial, fechaFinal);
     }
 
     @Override

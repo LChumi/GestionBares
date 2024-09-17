@@ -29,9 +29,9 @@ public class ReporteController {
     private IMovimientoInventarioService movimientoInventarioService;
 
     @GetMapping("ventas")
-    public ResponseEntity<List<Venta>> obtenerVentasPorFecha(@RequestParam LocalDate fechaInicio, @RequestParam LocalDate fechaFin) {
+    public ResponseEntity<List<Venta>> obtenerVentasPorFecha(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fechaInicial, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fechaFin){
         try {
-            return ResponseEntity.ok(reporteService.obtenerVentasPorFecha(fechaInicio, fechaFin));
+            return ResponseEntity.ok(reporteService.obtenerVentasPorFecha(fechaInicial, fechaFin));
         }catch (Exception e){
             log.error(e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);

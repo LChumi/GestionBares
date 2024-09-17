@@ -14,7 +14,7 @@ import java.util.List;
 
 public interface VentaRepository extends JpaRepository<Venta,Long> {
 
-    List<Venta> findByFechaBetween(LocalDate startDate, LocalDate endDate);
+    List<Venta> findByFechaBetween(LocalDate fechaInicial, LocalDate fechaFinal );
     List<Venta> findByFecha(LocalDate fecha);
     List<Venta> findByFechaAndEstadoAndUsuario(LocalDate fecha , Boolean estado, Usuario usuario);
 
