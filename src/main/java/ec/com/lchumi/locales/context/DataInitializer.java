@@ -59,6 +59,7 @@ public class DataInitializer implements CommandLineRunner {
             cliente.setDireccion("S/N");
             cliente.setTelefono("9999999999");
             cliente.setCupo(new BigDecimal("0.0"));
+            cliente.setCredito(new BigDecimal("0.0"));
             clienteService.save(cliente);
         }
     }

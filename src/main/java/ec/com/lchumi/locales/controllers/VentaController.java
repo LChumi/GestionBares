@@ -85,6 +85,10 @@ public class VentaController {
                                               @RequestParam BigDecimal montoCredito,
                                               @RequestParam BigDecimal montoEfectivo,
                                               @RequestParam BigDecimal montoTarjeta) {
+        montoCredito = montoCredito != null ? montoCredito : BigDecimal.ZERO;
+        montoEfectivo = montoEfectivo != null ? montoEfectivo : BigDecimal.ZERO;
+        montoTarjeta = montoTarjeta != null ? montoTarjeta : BigDecimal.ZERO;
+
         try {
             Venta venta = ventaService.procesarPago(ventaId, montoCredito, montoEfectivo, montoTarjeta);
             return ResponseEntity.ok(venta);
