@@ -41,4 +41,9 @@ public class ProductoServiceImpl extends GenericServiceImpl<Producto,Long> imple
     public List<AlmacenProducto> listarProductos() {
         return almacenProductoRepository.findAll();
     }
+
+    @Override
+    public void elimarProductoAlmacen(Long id) {
+        almacenProductoRepository.deleteById(id);
+    }
 }

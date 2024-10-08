@@ -147,4 +147,15 @@ public class ProductoController {
         }
     }
 
+    @DeleteMapping("eliminarInv/{id}")
+    public ResponseEntity<Void> eliminarInv(@PathVariable Long id) {
+        try{
+            productoService.elimarProductoAlmacen(id);
+            return ResponseEntity.noContent().build();
+        }catch (Exception e){
+            log.error("Error en el servicio eliminar producto- Almacen  {}",e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
 }

@@ -10,4 +10,6 @@ public interface IProductoService extends IGenericService<Producto,Long> {
     Producto findByBarra(String barra);
     List<Producto> findByNombreOrBarra(String data);
     List<AlmacenProducto> listarProductos();
+
+    void elimarProductoAlmacen(Long id);
 }

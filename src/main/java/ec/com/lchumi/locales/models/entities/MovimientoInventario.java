@@ -10,7 +10,7 @@ import java.time.LocalDate;
 
 @Data
 @Entity
-@Table(name = "movinventario")
+@Table(name = "movinventario",uniqueConstraints = @UniqueConstraint(columnNames = {"movinv_producto", "movin_bodega"}))
 public class MovimientoInventario {
 
     @Id
