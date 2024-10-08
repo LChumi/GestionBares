@@ -38,7 +38,7 @@ public class InventarioController {
         }
     }
 
-    @DeleteMapping("reducir-stock/{productoId}/{bodegaId}/{cantidad}")
+    @DeleteMapping("reducir-stock/{productoId}/{bodegaId}/{cantidad}/{usuarioId}")
     public ResponseEntity<String> reducirStock(@PathVariable Long productoId, @PathVariable Long bodegaId, @PathVariable int cantidad,@PathVariable Long usuarioId) {
         try {
             inventarioService.reducirStock(productoId, bodegaId, cantidad,usuarioId);
